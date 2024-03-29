@@ -28,6 +28,7 @@ class SimpleLogic
             case "queryPersonByPhone":
                 return $this->dh->queryPersonByPhone($param);
             // EXTENSION END
+            
             default:
                 return null;
         }
