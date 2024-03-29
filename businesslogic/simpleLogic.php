@@ -23,10 +23,10 @@ class SimpleLogic
             case "queryPersonByName":
                 return $this->dh->queryPersonByName($param);
             // EXTENSION START
-            case "queryPersonByDept":
-                return $this->dh->queryPersonByDept($param);
-            case "queryPersonByPhone":
-                return $this->dh->queryPersonByPhone($param);
+           // case "queryPersonByDept":
+               // return $this->dh->queryPersonByDept($param);
+           // case "queryPersonByPhone":
+               // return $this->dh->queryPersonByPhone($param);
             // EXTENSION END
             
             default:
