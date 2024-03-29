@@ -10,21 +10,11 @@ class SimpleLogic
         $this->dh = new DataHandler();
     }
 
-    function handleRequest($method, $param)
+    function handleRequest($method)
     {
         switch ($method) {
-            case "queryPersons":
-                return $this->dh->queryPersons();
-            case "queryPersonById":
-                return $this->dh->queryPersonById($param);
-            case "queryPersonByName":
-                return $this->dh->queryPersonByName($param);
-            // EXTENSION START
-            case "queryPersonByDept":
-                return $this->dh->queryPersonByDept($param);
-            case "queryPersonByPhone":
-                return $this->dh->queryPersonByPhone($param);
-            // EXTENSION END
+            case "getAppointments":
+                return $this->dh->getAppointments();
             default:
                 return null;
         }
