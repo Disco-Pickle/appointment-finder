@@ -4,10 +4,21 @@ include("./models/appointment.php");
 // Relevant variable names are in appointment.php
 class DataHandler
 {
-    // Gets demo data array
-    public function getAppointments()
+    // Fetches demo data (below)
+    public function fetchAppointments()
     {
         return DataHandler::getDemoData();
+    }
+
+    // Puts demo data into an array for returning
+    public function getAppointments()
+    {
+        $result = [];
+        foreach ($this->fetchAppointments() as $val) 
+        {
+            $result[] = $val;
+        }
+        return $result;
     }
 
     // Has demo data array
@@ -22,5 +33,4 @@ class DataHandler
             new Appointment(03, 05, 2024, "14:30", "16:30", 0)
         ];
     }
-    // EXTENSION END
 }
