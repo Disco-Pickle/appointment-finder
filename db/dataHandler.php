@@ -6,7 +6,7 @@ class DataHandler
 
     function __construct()
     {
-        $this->db = new mysqli('localhost:3306', 'root', 'ourpassword', 'database');
+        $this->db = new mysqli('localhost:3306', 'root', 'ourpassword', 'doodle');
         if ($this->db->connect_error) {
             die("Connection failed: " . $this->db->connect_error);
         }
