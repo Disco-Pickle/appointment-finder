@@ -14,7 +14,7 @@ class DataHandler
 
     public function queryPersons()
     {
-        $result = $this->db->query("SELECT * FROM persons");
+        $result = $this->db->query("SELECT * FROM doodle");
         $persons = [];
         while ($row = $result->fetch_assoc()) {
             $persons[] = new Person($row['id'], $row['firstname'], $row['lastname'], $row['email'], $row['phone'], $row['department']);
