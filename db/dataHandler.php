@@ -59,7 +59,7 @@ class DataHandler
         }
         return $result;
     }
-    
+
     private static function getDemoData()
     {
         return [ new Person(1, "Jane", "Doe", "jane.doe@fhtw.at", 1234567, "Central IT"),
