@@ -1,0 +1,8 @@
+{
+    "action": "addAppointment",
+    "day": 15,
+    "month": 4,
+    "year": 2024,
+    "startTime": "09:00:00",
+    "endTime": "10:00:00"
+}
