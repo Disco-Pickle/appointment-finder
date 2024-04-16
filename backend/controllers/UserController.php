@@ -6,7 +6,6 @@ require_once '../utilities/Database.php';
 class UserController
 {
     private $db;
-
     //------------------------------------Contructor
     public function __construct()
     {
@@ -23,8 +22,7 @@ class UserController
         $stmt->execute([$firstname, $lastname, $email, $phone, $department, $hashed_password]);
     }
     //----------------------------------------------------------------------
-
-        //----------------------------------------------------------------------Login
+    //--------------------------------------------------------------------------------Login
     public function login($username, $password)
     {
 
@@ -43,11 +41,8 @@ class UserController
             // Handle login failure
             echo "Invalid username or password.";
         }
-    }
-        //---------------------------------------------------------
-
-    
-        //----------------------------------------------------Handle Request
+    }//---------------------------------------------------------
+    //--------------------------------------------------------------Handle Request
     public function handleRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -59,8 +54,6 @@ class UserController
             }
         }
     }
-}
-
-
+}//---------------------------------------------------------
 $controller = new UserController();
 $controller->handleRequest();

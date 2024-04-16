@@ -4,12 +4,13 @@ class AppointmentController
 {
     private $db;
 
+    //-------------------------------Constructor
     public function __construct()
     {
         $database = new Database();
         $this->db = $database->getConnection();
-    }
-
+    }//-----------------------------------------
+//-------------------------------------------------------------------------Add Appointment
     public function addAppointment($day, $month, $year, $startTime, $endTime)
     {
         // Prepare the SQL statement
@@ -22,7 +23,8 @@ class AppointmentController
 
         // Execute the statement with the appointment data
         $stmt->execute([$day, $month, $year, $startDateTime, $endDateTime]);
-    }
+    }//---------------------------------------------------------------------
+    //---------------------------------------------------------------------------Request Router
     public function handleRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -36,7 +38,7 @@ class AppointmentController
                     );
             }
         }
-    }
+    }//-----------------------------------------
 }
 $controller = new AppointmentController();
 $controller->handleRequest();
