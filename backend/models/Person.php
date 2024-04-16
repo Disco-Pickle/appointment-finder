@@ -1,5 +1,6 @@
 <?php
-class Person {
+class Person
+{
 
     public $firstname;
     public $lastname;
@@ -8,8 +9,9 @@ class Person {
     public $department;
     public $password;
 
-    function __construct($fn, $ln, $mail, $phone, $dept, $password) {
-       
+    function __construct($fn, $ln, $mail, $phone, $dept, $password)
+    {
+
         $this->firstname = $fn;
         $this->lastname = $ln;
         $this->email = $mail;
@@ -18,4 +20,3 @@ class Person {
         $this->password = $password;
     }
 }
-?>
