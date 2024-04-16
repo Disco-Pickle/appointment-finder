@@ -8,3 +8,9 @@ http://localhost/*PATH-TO-REPLACE*/serviceHandler.php?method=queryPersonByName&p
 http://localhost/*PATH-TO-REPLACE*/simpleJsonClient/simplePersonHandle.html
 
 
+# Database
+
+## Login
+http://192.168.0.22:8080
+root
+ourpassword
