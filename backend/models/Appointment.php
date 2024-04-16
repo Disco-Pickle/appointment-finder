@@ -1,18 +1,15 @@
 <?php
 class Appointment
 {
-  public $day;
-  public $month;
-  public $year;
-  public $startTime;
-  public $endTime;
+  public $author;
+  public $name;
+  public $dates;
 
-  function __construct($d, $m, $y, $start, $end)
+  function __construct($author, $name, $dates)
   {
-    $this->day = $d;
-    $this->month = $m;
-    $this->year = $y;
-    $this->startTime = $start;
-    $this->endTime = $end;
+    $this->author = $author;
+    $this->name = $name;
+    $this->dates = $dates;
   }
 }
+?>

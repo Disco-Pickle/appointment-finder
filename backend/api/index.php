@@ -8,16 +8,16 @@ $request = isset($_SERVER['PATH_INFO']) ? explode('/', trim($_SERVER['PATH_INFO'
 $input = json_decode(file_get_contents('php://input'), true);
 
 // Create a new instance
-$userController = new UserController();
+//$userController = new UserController();
 $appointmentController = new AppointmentController();
 
-// Handle request based on HTTP method
+// Handle request based on HTTP mer->handleRequeethod
 switch ($method) {
   case 'GET':
     break;
   case 'POST':
-    $UserController->handleRequest($method, $input);
-    $AppointmentController->handleRequest($method, $input);
+    //$userController->handleRequest($method, $input);
+    $appointmentController->handleRequest($method, $input);
 
     break;
   case 'PUT':

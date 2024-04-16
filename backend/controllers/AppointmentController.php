@@ -9,36 +9,51 @@ class AppointmentController
     {
         $database = new Database();
         $this->db = $database->getConnection();
-    }//-----------------------------------------
-//-------------------------------------------------------------------------Add Appointment
-    public function addAppointment($day, $month, $year, $startTime, $endTime)
+    } //-----------------------------------------
+    //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
+    public function addAppointment($author, $name, $dates)
     {
-        // Prepare the SQL statement
-        $stmt = $this->db->prepare("INSERT INTO Appointment (day, month, year, startTime, endTime) VALUES (?, ?, ?, ?, ?)");
-
-        // Format the date and time values
-        $date = "$year-$month-$day";
-        $startDateTime = "$date $startTime";
-        $endDateTime = "$date $endTime";
-
-        // Execute the statement with the appointment data
-        $stmt->execute([$day, $month, $year, $startDateTime, $endDateTime]);
-    }//---------------------------------------------------------------------
-    //---------------------------------------------------------------------------Request Router
-    public function handleRequest()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['action']) && $_POST['action'] == 'addAppointment') {
-                $this->addAppointment(
-                        $_POST['day'],
-                        $_POST['month'],
-                        $_POST['year'],
-                        $_POST['startDateTime'],
-                        $_POST['endDateTime']
-                    );
+        $this->db->beginTransaction();
+    
+        try {
+            $stmt = $this->db->prepare("INSERT INTO appointment (author, name) VALUES (?, ?)");
+            $stmt->execute([$author, $name]);
+            $appointmentId = $this->db->lastInsertId();
+    
+            foreach ($dates as $date) {
+                // Check that all necessary keys are present in the date
+                if (!isset($date['day'], $date['month'], $date['year'], $date['persons'], $date['starthour'], $date['startminute'], $date['endhour'], $date['endminute'])) {
+                    throw new Exception('A date is missing one or more necessary keys.');
+                }
+    
+                $stmt = $this->db->prepare("INSERT INTO dates (day, month, year, persons, fk_idappointment, starthour, startminute, endhour, endminute) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$date['day'], $date['month'], $date['year'], $date['persons'], $appointmentId, $date['starthour'], $date['startminute'], $date['endhour'], $date['endminute']]);
             }
+            $this->db->commit();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
         }
-    }//-----------------------------------------
+    }
+    
+
+    //---------------------------------------------------------------------
+    //---------------------------------------------------------------------------Request Router
+    public function handleRequest($method, $input)
+{
+    if ($method == 'POST') {
+        if (isset($input['action']) && $input['action'] == 'addAppointment') {
+            $dates = $input['dates'];
+            $this->addAppointment(
+                $input['author'],
+                $input['name'],
+                $dates
+            );
+        }
+    }
 }
-$controller = new AppointmentController();
-$controller->handleRequest();
+
+    //-----------------------------------------
+}
+#$controller = new AppointmentController();
+#$controller->handleRequest($method,$input);
