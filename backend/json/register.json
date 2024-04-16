@@ -1,0 +1,9 @@
+{
+    "action": "register",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "phone": "1234567890",
+    "department": "Sales",
+    "password": "password123"
+}
