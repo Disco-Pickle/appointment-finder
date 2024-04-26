@@ -35,7 +35,39 @@ class AppointmentController
             throw $e;
         }
     }
+    public function getAppointmentById($appointmentId)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM appointment WHERE id = ?");
+            $stmt->execute([$appointmentId]);
+            $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$appointment) {
+                throw new Exception('Appointment not found.');
+            }
+
+            // You can also fetch associated dates for this appointment if needed
+            // Example: $appointment['dates'] = $this->getAppointmentDates($appointmentId);
+            
+            return $appointment;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+ public function getAppointmentDates($appointmentId)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM dates WHERE fk_idappointment = ?");
+            $stmt->execute([$appointmentId]);
+            $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $dates;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }
+
 
     //---------------------------------------------------------------------
     //---------------------------------------------------------------------------Request Router
