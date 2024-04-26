@@ -31,7 +31,7 @@ class RequestProcessor
                         // Assuming you have an appointment ID in the requestInput
                         $appointmentId = $requestInput['appointmentId'];
                         $appointment = $this->appointmentController->getAppointmentById($appointmentId);
-
+                        return $appointment;
                         // Process the retrieved appointment data (e.g., print or return it)
                         // Example: echo json_encode($appointment);
                         break;
