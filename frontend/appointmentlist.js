@@ -18,7 +18,7 @@ function fetchAppointmentData(appointmentId) {
         url: "../backend/api/api.php",
         type: "POST",
         data: JSON.stringify({
-            action: "getAppointment",
+            action: "getAllAppointments",
             appointmentId: appointmentId
         }),
         contentType: "application/json", // Set the content type to JSON
@@ -26,7 +26,7 @@ function fetchAppointmentData(appointmentId) {
         success: function(response) {
             if (response) {
                 // Handle the response (e.g., append to the list of appointments)
-                console.log("Appointment data for ID " + appointmentId, response);
+                console.log("Appointment data for ID " + appointmentId, response);            
                 // Append the data to your list of appointments
                 // ...
                 // Continue fetching next appointment

@@ -35,6 +35,8 @@ class RequestProcessor
                         // Process the retrieved appointment data (e.g., print or return it)
                         // Example: echo json_encode($appointment);
                         break;
+                    case 'getAllAppointments':
+                        return $this->appointmentController->getAllAppointments();
                     default:
                         echo "RequstInput Error";         
                         return ['error' => 'Invalid action'];               
