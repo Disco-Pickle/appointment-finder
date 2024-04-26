@@ -36,6 +36,23 @@ $(function ()
         author = $("#author").val();
         console.log("author = " + author);
 
+        $.ajax
+        ({
+            type: "POST",
+            urls: "../backend/api/api.php",
+            cache: false,
+            data: {addAppointment: author, name, dates},
+            dataType: "json",
+            success: function()
+            {
+                console.log("Appointment data successfully sent to database");
+            },
+            error: function()
+            {
+                console.log("ERROR: Sending appointment data to database failed");
+            }
+        })
+
         // Get proposed dates
         for(let i = 1; i <= amountDates; i++)
         {
