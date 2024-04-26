@@ -17,7 +17,7 @@ $(function ()
         $.ajax
         ({
             type: "GET", // HTTP method to be used
-            url: "../serviceHandler.php", // Target URL to which the HTTP request is sent
+            url: "../backend/api/api.php", // Target URL to which the HTTP request is sent
             cache: false, // false forces that requested pages are not cached by the browser
             data: {method: "getAppointments"}, // Data to be sent to the server
             dataType: "json", // Data type expected to be received from the server
