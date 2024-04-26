@@ -12,8 +12,8 @@ http://localhost/*PATH-TO-REPLACE*/simpleJsonClient/simplePersonHandle.html
 
 ## Login
 http://192.168.0.22:8080
-root
-ourpassword
+- root
+- ourpassword
 
 # Issue Tracker
 ## Issues

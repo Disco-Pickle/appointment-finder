@@ -26,7 +26,7 @@ class AppointmentController
                     throw new Exception('A date is missing one or more necessary keys.');
                 }
 
-                $stmt = $this->db->prepare("INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)");
+                $stmt = $this->db->prepare("INSERT INTO dates (day, starttime, endtime, fk_idappointment) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $appointmentId]);
             }
             $this->db->commit();
