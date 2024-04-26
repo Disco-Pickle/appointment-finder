@@ -9,22 +9,45 @@ $(function () {
         $.ajax({
             url: "../backend/api/api.php",
             type: "POST",
-            data: JSON.stringify({
+            data: 
+            JSON.stringify({
                 action: "getAllAppointments"
             }),
             contentType: "application/json",
             dataType: "json",
-            success: function(response) {
+            success: function(response) 
+            {
                 if (response) {
-                    // Clear existing appointments (if any)
+                    // Clear existing appointments (if there are any)
                     $("#appointments").empty();
 
                     // Append each appointment to the list
-                    response.forEach(function(appointment) {
-                        const listItem = $("<li>").addClass("list-group-item").text(`${appointment.name}, ${appointment.author}`);
-                        $("#appointments").append(listItem);
+                    response.forEach(function(appt, i) 
+                    {
+                        if(appt.expired === 0) // If the appointment has not expired, it is selectable
+                        {
+                            $("#appointments").append
+                            (
+                                "<li class='list-group-item'>" +
+                                    "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "'>" +
+                                    "<label class='form-check-label' for='appointment" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + "</label>" + 
+                                "</li>"
+                            );
+                        }
+                        else // Otherwise it is disabled and marked as "(Expired)"
+                        {
+                            $("#appointments").append
+                            (
+                                "<li class='list-group-item'>" +
+                                    "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "' disabled>" +
+                                    "<label class='form-check-label' for='appointment" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + " (Expired)</label>" + 
+                                "</li>"
+                            );
+                        }
                     });
-                } else {
+                }
+                else 
+                {
                     console.log("No appointments found.");
                 }
             },
