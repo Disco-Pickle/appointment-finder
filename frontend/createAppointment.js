@@ -19,7 +19,6 @@ $(function ()
                 "</div>" +
             "</div>"
         )
-        console.log("Date added");
     });
 
     // Submitting the new appointment (saving it in the DB)
@@ -30,11 +29,11 @@ $(function ()
     {
         // Get appointment name
         name = $("#name").val();
-        console.log("name = " + name);
+        console.log("Name: ", name);
 
         // Get author
         author = $("#author").val();
-        console.log("author = " + author);
+        console.log("Author: ", author);
 
         // Get proposed dates
         for(let i = 1; i <= amountDates; i++)
@@ -46,20 +45,23 @@ $(function ()
                 endtime: $("#endtime" + i).val()
             });
         }
+        console.log("Dates: ", dates);
+
+        // Construct the JSON payload
+        const payload = {
+            action: "addAppointment",
+            author: author,
+            name: name,
+            dates: dates
+        };
 
         $.ajax
         ({
             type: "POST",
             url: "../backend/api/api.php",
             cache: false,
-            data: 
-            {
-                "action": "addAppointment",
-                "author": author,
-                "name": name,
-                "dates": dates
-            }, 
-            dataType: "json",
+            data: JSON.stringify(payload), // Convert to JSON string
+            contentType: "application/json", // Set content type
             success: function()
             {
                 console.log("Appointment data successfully sent to database");

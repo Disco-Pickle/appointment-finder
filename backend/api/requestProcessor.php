@@ -47,6 +47,5 @@ class RequestProcessor
             echo $method;
             echo $requestInput;
         }
-        
     }
 }
