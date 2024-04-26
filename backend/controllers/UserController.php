@@ -43,7 +43,8 @@ class UserController
         }
     }//---------------------------------------------------------
     //--------------------------------------------------------------Handle Request
-    public function handleRequest()
+}
+    /*public function handleRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['action']) && $_POST['action'] == 'register') {
@@ -57,3 +58,4 @@ class UserController
 }//---------------------------------------------------------
 $controller = new UserController();
 $controller->handleRequest();
+*/ ?>

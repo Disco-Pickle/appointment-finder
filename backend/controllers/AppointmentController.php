@@ -39,6 +39,7 @@ class AppointmentController
 
     //---------------------------------------------------------------------
     //---------------------------------------------------------------------------Request Router
+    /*
     public function handleRequest($method, $input)
 {
     if ($method == 'POST') {
@@ -54,6 +55,7 @@ class AppointmentController
 }
 
     //-----------------------------------------
+    */
 }
 #$controller = new AppointmentController();
 #$controller->handleRequest($method,$input);

@@ -11,4 +11,5 @@ require_once '../utilities/Database.php';
 require_once '../models/Person.php';
 require_once '../controllers/UserController.php';
 require_once '../controllers/AppointmentController.php';
+require_once '../api/requestProcessor.php';
 // Add other necessary files here
