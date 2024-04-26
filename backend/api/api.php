@@ -9,7 +9,7 @@ $requestInput = json_decode(file_get_contents('php://input'), true);
 
 // Create a new instance
 //$userController = new UserController();
-$requestProcessor = new requestProcessor;
+$requestProcessor = new RequestProcessor;
 $response = $requestProcessor->handleRequest($method,$requestInput);
 //echo json_decode($response);
 // Handle request based on HTTP mer->handleRequeethod
