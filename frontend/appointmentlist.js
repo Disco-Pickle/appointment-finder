@@ -13,7 +13,6 @@ $(function ()
         console.log("Sending Ajax Request");
         data = null;
     
-        // see: https://api.jquery.com/jQuery.ajax/
         $.ajax
         ({
             type: "GET", // HTTP method to be used

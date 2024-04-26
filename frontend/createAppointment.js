@@ -36,12 +36,29 @@ $(function ()
         author = $("#author").val();
         console.log("author = " + author);
 
+        // Get proposed dates
+        for(let i = 1; i <= amountDates; i++)
+        {
+            dates.push
+            ({
+                day: $("#day" + i).val(),
+                starttime: $("#starttime" + i).val(),
+                endtime: $("#endtime" + i).val()
+            });
+        }
+
         $.ajax
         ({
             type: "POST",
-            urls: "../backend/api/api.php",
+            url: "../backend/api/api.php",
             cache: false,
-            data: {addAppointment: author, name, dates},
+            data: 
+            {
+                "action": "addAppointment",
+                "author": author,
+                "name": name,
+                "dates": dates
+            }, 
             dataType: "json",
             success: function()
             {
@@ -52,16 +69,5 @@ $(function ()
                 console.log("ERROR: Sending appointment data to database failed");
             }
         })
-
-        // Get proposed dates
-        for(let i = 1; i <= amountDates; i++)
-        {
-            dates.push([
-                $("#day" + i).val(),
-                $("#starttime" + i).val(),
-                $("#endtime" + i).val()
-            ]);
-            console.log("dates[" + (i - 1) + "] =" + dates[i - 1]);
-        }
     });
 });
