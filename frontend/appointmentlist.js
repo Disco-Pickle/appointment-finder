@@ -8,23 +8,23 @@ $(function ()
 
     // Loading the appointments
     let data = null;
+    let amountAppointments;
     function loadAppointments() 
-    {
-        console.log("Sending Ajax Request");
-        data = null;
-    
+    {    
+        // Data is fetched via AJAX calls
         $.ajax
         ({
             type: "GET", // HTTP method to be used
             url: "../backend/api/api.php", // Target URL to which the HTTP request is sent
             cache: false, // false forces that requested pages are not cached by the browser
-            data: {method: "getAppointments"}, // Data to be sent to the server
+            data: {"action": "getAppointment"}, // Data to be sent to the server
             dataType: "json", // Data type expected to be received from the server
-            success: function (response) // Function to be executed if the HTTP request is successful
+            success: function(response) // Function to be executed if the HTTP request is successful
             {
                 console.log("Ajax succeded", response);
                 data = response;
 
+                // The fetched appointments are appended to the appointments element
                 $.each(data, function(i, appt) // For each appointment fetched, a checkbox item is appended to the list
                 {
                     if(appt.expired === 0) // If the appointment has not expired, it is selectable

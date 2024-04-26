@@ -23,13 +23,13 @@ class AppointmentController
     
             foreach ($dates as $date) {
                 // Check that all necessary keys are present in the date
-                if (!isset($date['day'], $date['starttime'], $date['endtime'], $date['persons'])) {
+                if (!isset($date['day'], $date['starttime'], $date['endtime'])) {
                     throw new Exception('A date is missing one or more necessary keys.');
                 }
             
                 // Insert date data into the 'dates' table
-                $stmt = $this->db->prepare("INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $appointmentId]);
+                $stmt = $this->db->prepare("INSERT INTO dates (day, starttime, endtime, fk_idappointment) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $appointmentId]);
             }
             
             $this->db->commit();
