@@ -37,6 +37,8 @@ class RequestProcessor
                         break;
                     case 'getAllAppointments':
                         return $this->appointmentController->getAllAppointments();
+                    case 'getAppointmentById':
+                        return $this->appointmentController->getAppointmentDates($requestInput['appointmentId']);
                     default:
                         echo "RequstInput Error";         
                         return ['error' => 'Invalid action'];               

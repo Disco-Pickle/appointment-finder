@@ -81,7 +81,7 @@ class AppointmentController
     public function getAppointmentDates($appointmentId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT day, starttime, endtime FROM dates WHERE fk_idappointment = ?");
+            $stmt = $this->db->prepare("SELECT day, starttime, endtime, persons FROM dates WHERE fk_idappointment = ?");
             $stmt->execute([$appointmentId]);
             $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
