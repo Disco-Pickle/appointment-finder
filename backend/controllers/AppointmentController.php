@@ -41,7 +41,7 @@ class AppointmentController
     public function getAllAppointments()
     {
         try {
-            $stmt = $this->db->prepare("SELECT id, author, name FROM appointment");
+            $stmt = $this->db->prepare("SELECT id, author, name, expired FROM appointment");
             $stmt->execute();
             $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
