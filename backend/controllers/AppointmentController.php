@@ -38,6 +38,25 @@ class AppointmentController
             throw $e;
         }
     }
+    public function getAllAppointments()
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT id, author, name, expired FROM appointment");
+            $stmt->execute();
+            $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // You can also fetch associated dates for each appointment if needed
+            // Example: foreach ($appointments as &$appointment) {
+            //              $appointment['dates'] = $this->getAppointmentDates($appointment['id']);
+            //          }
+    
+            echo json_encode($appointments);
+            return $appointments;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    
     
     public function getAppointmentById($appointmentId)
     {
@@ -62,7 +81,7 @@ class AppointmentController
     public function getAppointmentDates($appointmentId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT day, starttime, endtime FROM dates WHERE fk_idappointment = ?");
+            $stmt = $this->db->prepare("SELECT day, starttime, endtime, persons FROM dates WHERE fk_idappointment = ?");
             $stmt->execute([$appointmentId]);
             $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
