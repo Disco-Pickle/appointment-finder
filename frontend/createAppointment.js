@@ -24,6 +24,7 @@ $(function ()
     // Submitting the new appointment (saving it in the DB)
     let name;
     let author;
+    let expired;
     let dates = [];
     $("#btnSubmit").click(function()
     {
@@ -34,6 +35,10 @@ $(function ()
         // Get author
         author = $("#author").val();
         console.log("Author: ", author);
+
+        // Get date after which the date is expired
+        expired = $("#expired").val();
+        console.log("Expired: ", expired);
 
         // Get proposed dates
         for(let i = 1; i <= amountDates; i++)
@@ -52,6 +57,7 @@ $(function ()
             action: "addAppointment",
             author: author,
             name: name,
+            expired: expired,
             dates: dates
         };
 

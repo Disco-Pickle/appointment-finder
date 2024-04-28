@@ -1,11 +1,13 @@
 $(function () {
     // Clicking the load button
-    $("#btnLoad").click(function() {
+    $("#btnLoad").click(function() 
+    {
         loadAppointments();
     });
 
     // Loading the appointments
-    function loadAppointments() {
+    function loadAppointments() 
+    {
         $.ajax({
             url: "../backend/api/api.php",
             type: "POST",
@@ -55,5 +57,11 @@ $(function () {
                 console.error("Error fetching appointments:", response);
             }
         });
+    }
+
+    // Loading the dates of an appointment
+    function loadDates()
+    {
+        
     }
 });
