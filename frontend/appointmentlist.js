@@ -34,8 +34,13 @@ $(function () {
                             $("#appointments").append
                             (
                                 "<li class='list-group-item'>" +
-                                    "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "'>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ")</label>" + 
+                                    "<p class='d-inline-flex gap-1'>" +
+                                        "<button class='btn btn-primary' type='button' data-bs-toggle='collapse' data-bs-target='#appointmentCollapse" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ")</button>" +  
+                                    "</p>" + 
+                                    "<div class='collapse' id='appointmentCollapse" + appt.id + "'>" +  
+                                        "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "'>" +
+                                        "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ")</label>" + 
+                                    "</div>" + 
                                 "</li>"
                             );
 
