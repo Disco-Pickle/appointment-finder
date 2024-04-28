@@ -16,9 +16,9 @@ $(function () {
             }),
             contentType: "application/json",
             dataType: "json",
-            success: function(response) 
+            success: function(appointments) 
             {
-                if (response) {
+                if (appointments) {
                     // Clear existing appointments (if there are any)
                     $("#appointments").empty();
 
@@ -26,7 +26,7 @@ $(function () {
                     let today = new Date(); // Date() with no parameters constructs a new Date object with the current date
 
                     // Append each appointment to the list
-                    response.forEach(function(appt, i) 
+                    appointments.forEach(function(appt, i) 
                     {
                         let currentExpiryDate = new Date(appt.expired);
                         if(today.getTime() < currentExpiryDate.getTime()) // If the appointment has not expired, it is selectable (getTime() gets epoch time in seconds)
@@ -64,34 +64,25 @@ $(function () {
                             dataType: "json",
                             success: function(dates) 
                             {
-                                if (dates && dates.dates) 
+                                console.log("Dates for appointment #" + appt.id + ":", dates);
+                                
+                                // Create new list for this appointment's dates
+                                $("#appointmentLabel" + appt.id).append
+                                (
+                                    "<ul class='list-group' id='appointmentDates" + appt.id + "'</ul>"
+                                );
+            
+                                // Append everything to the list item
+                                dates.forEach(function(date, i)
                                 {
-                                    // Update UI with fetched dates (e.g., display in a modal)
-                                    console.log("Dates for appointment #" + appt.id + ":", dates.dates);
-                                    
-                                    // Create new list for this appointment's dates
-                                    $("#appointmentLabel" + appt.id).append
+                                    $("#appointmentDates" + appt.id).append
                                     (
-                                        "<ul class='list-group' id='appointmentDates" + appt.id + "'</ul>"
+                                        "<li class='list-group-item'>" + 
+                                            "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "date" + i + "'>" + 
+                                            "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + "</label>" + 
+                                        "</li>"
                                     );
-                
-                                    // Append everything to the list item
-                                    dates.forEach(function(dates, i)
-                                    {
-                                        $("#appointmentDates" + appt.id).append
-                                        (
-                                            "<li class='list-group-item'>" + 
-                                                "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "date" + i + "'>" + 
-                                                "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + dates[i].day + ", " + dates[i].starttime + " - " + dates[i].endtime + "</label>" + 
-                                            "</li>"
-                                        );
-                                    });
-                
-                                }
-                                else 
-                                {
-                                    console.log("No dates found for appointment #" + appt.id);
-                                }
+                                });
                             },
                             error: function(dates) 
                             {
@@ -113,8 +104,8 @@ $(function () {
                     console.log("No appointments found.");
                 }
             },
-            error: function(response) {
-                console.error("Error fetching appointments:", response);
+            error: function(appointments) {
+                console.error("Error fetching appointments:", appointments);
             }
         });
     }
