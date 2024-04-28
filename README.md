@@ -22,3 +22,5 @@ http://192.168.0.22:8080
 ## To-Dos
 - addPersons() is needed to add persons to specific dates of an appointment
 - Add a button (and function) that sends selected appointment dates and entered name to DB
+- Create a button that calls deleteAllExpired
+- Create a button per appointment that deletes the appointment
