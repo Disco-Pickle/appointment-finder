@@ -48,7 +48,7 @@ $(function () {
                                 "</li>"
                             );
                         }
-                        /*
+                       
                         // Create a container for dates (initially hidden)
                         const datesContainer = $("<div class='dates-container'></div>");
 
@@ -66,7 +66,7 @@ $(function () {
                                 getAppointmentDates(appointmentId);
                             }
                         });
-                        */
+                      
                     });
                 }
                 else 

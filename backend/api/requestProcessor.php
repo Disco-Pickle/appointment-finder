@@ -25,6 +25,7 @@ class RequestProcessor
                             $dates= $requestInput['dates'];
                         }else echo 'json error';
                         return $this->appointmentController->addAppointment($author,$name,$expired,$dates);
+                        
                     case 'getAppointment':
                         // Assuming you have an appointment ID in the requestInput
                         $appointmentId = $requestInput['appointmentId'];
