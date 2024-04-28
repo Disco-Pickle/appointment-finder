@@ -32,7 +32,11 @@ class AppointmentController
                 $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $appointmentId]);
             }
             
-            $this->db->commit();
+            if(!($this->db->commit())){return ['message'=> 'errorrrrrrr'];}
+            
+            return ['message' => 'Appointment added to DB', 'appointmentId' => $appointmentId];
+
+          
         } catch (Exception $e) {
             $this->db->rollBack();
             throw $e;
@@ -77,7 +81,21 @@ class AppointmentController
             throw $e;
         }
     }
-    
+    public function insertDates($day,$startime,$endtime,$persons,$appointmentId){
+        $this->db->beginTransaction();
+        try {
+            $stmt=$this->db->prepare('INSERT into dates(day,starttime,endtime,persons,fk_idappointment)VALUES (?,?,?,?,?)');
+            $stmt->execute([$day,$startime,$endtime,$persons,$appointmentId]);
+        }catch (Exception $e) {
+            throw $e;
+        }
+
+
+
+
+
+
+    }
     public function getAppointmentDates($appointmentId)
     {
         try {
