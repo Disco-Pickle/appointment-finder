@@ -55,6 +55,7 @@ class AppointmentController
             //          }
     
             //echo json_encode($appointments);
+                echo $appointments;
             return $appointments;
         } catch (Exception $e) {
             throw $e;
@@ -89,11 +90,6 @@ class AppointmentController
         }catch (Exception $e) {
             throw $e;
         }
-
-
-
-
-
 
     }
     public function getAppointmentDates($appointmentId)

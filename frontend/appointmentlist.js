@@ -49,7 +49,7 @@ $(function () {
                                 "</li>"
                             );
                         }
-
+                       
                         // Appends appointment dates of this appointment
                         /* appendAppointmentDates(appt.id); */
                         $.ajax({
@@ -95,8 +95,7 @@ $(function () {
                         $("#appointmentLabel" + appt.id).on("click", function() 
                         {
                         $("#appointment" + appt.id + "date" + ???).toggle(); // Toggle visibility
-                        });
-                        */
+                        }); */
                       
                     });
                 }
@@ -110,7 +109,7 @@ $(function () {
             }
         });
     }
-
+});
     /*
     // Fetch appointment dates
     function appendAppointmentDates(apptID) 
@@ -163,4 +162,4 @@ $(function () {
         });
     }
     */
-});
+
