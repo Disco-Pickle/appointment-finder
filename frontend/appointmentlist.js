@@ -76,6 +76,15 @@ $(function () {
                                             "</li>"
                                         );
                                     });
+
+                                    // Appends input field for name to this appointment
+                                    $("#appointmentLabel" + appt.id).append
+                                    (
+                                        "<div class='form-floating'>" + 
+                                            "<input type='text' class='form-control' name='attendeeName" + appt.id + "' id='attendeeName" + appt.id + "' placeholder='Your name'>" + 
+                                            "<label for='attendeeName" + appt.id + "'>Your name</label>" + 
+                                        "</div>"
+                                    );
                                 },
                                 error: function(dates) 
                                 {

@@ -61,7 +61,8 @@ $(function ()
             dates: dates
         };
 
-       $.ajax
+        // Send data to DB
+        $.ajax
         ({
             type: "POST",
             url: "../backend/api/api.php",
@@ -71,6 +72,15 @@ $(function ()
             success: function()
             {
                 console.log("Appointment data successfully sent to database");
+
+                // Clearing all fields and reloading site
+                $("#name").val("");
+                $("#author").val("");
+                $("#expired").val("");
+                $("#day1").val("");
+                $("#starttime1").val("");
+                $("#endtime1").val("");
+                location.reload();
             },
             error: function()
             {
