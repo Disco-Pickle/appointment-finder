@@ -25,17 +25,17 @@ $(function () {
                     // Get today's date
                     let today = new Date(); // Date() with no parameters constructs a new Date object with the current date
 
-                    // Append each appointment to the list
+                    // If the appointment has not expired, it is selectable 
                     appointments.forEach(function(appt, i) 
                     {
                         let currentExpiryDate = new Date(appt.expired);
-                        if(today.getTime() < currentExpiryDate.getTime()) // If the appointment has not expired, it is selectable (getTime() gets epoch time in seconds)
+                        if(today.getTime() < currentExpiryDate.getTime()) // getTime() gets epoch time in seconds
                         {
                             $("#appointments").append
                             (
                                 "<li class='list-group-item'>" +
                                     "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "'>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + "</label>" + 
+                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ")</label>" + 
                                 "</li>"
                             );
 
@@ -77,25 +77,24 @@ $(function () {
                                     console.error("Error fetching appointment dates:", dates);
                                 }
                             });
+                        }                     
+                    });
 
-                            /*
-                            // Toggle behavior when appointment is clicked
-                            $("#appointmentLabel" + appt.id).on("click", function() 
-                            {
-                            $("#appointment" + appt.id + "date" + ???).toggle(); // Toggle visibility
-                            }); */
-                        }
-                        else // Otherwise it is disabled and marked as "(Expired)"
+                    // // If the appointment expired, it is disabled and marked as "(Expired)"
+                    appointments.forEach(function(appt, i)
+                    {
+                        let currentExpiryDate = new Date(appt.expired);
+                        if(today.getTime() >= currentExpiryDate.getTime())
                         {
                             $("#appointments").append
                             (
                                 "<li class='list-group-item'>" +
                                     "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "' disabled>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + " (Expired)</label>" + 
+                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ", expired)</label>" + 
                                 "</li>"
                             );
-                        }                      
-                    });
+                        } 
+                    })
                 }
                 else 
                 {
