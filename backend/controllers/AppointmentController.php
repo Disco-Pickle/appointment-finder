@@ -54,7 +54,8 @@ class AppointmentController
             //              $appointment['dates'] = $this->getAppointmentDates($appointment['id']);
             //          }
     
-            echo json_encode($appointments);
+            //echo json_encode($appointments);
+                echo $appointments;
             return $appointments;
         } catch (Exception $e) {
             throw $e;
@@ -89,11 +90,6 @@ class AppointmentController
         }catch (Exception $e) {
             throw $e;
         }
-
-
-
-
-
 
     }
     public function getAppointmentDates($appointmentId)
