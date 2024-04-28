@@ -1,11 +1,13 @@
 $(function () {
     // Clicking the load button
-    $("#btnLoad").click(function() {
+    $("#btnLoad").click(function() 
+    {
         loadAppointments();
     });
 
     // Loading the appointments
-    function loadAppointments() {
+    function loadAppointments() 
+    {
         $.ajax({
             url: "../backend/api/api.php",
             type: "POST",
@@ -57,33 +59,6 @@ $(function () {
         });
     }
 
-    $("#appointments").on("click", "li", function() {
-        const appointmentId = $(this).find("input").attr("id").replace("appointment", "");
-        getAppointmentDates(appointmentId);
-    });
 
-    // Fetch appointment dates
-    function getAppointmentDates(appointmentId) {
-        $.ajax({
-            url: "../backend/api/api.php",
-            type: "POST",
-            data: JSON.stringify({
-                action: "getAppointmentDates",
-                appointmentId: appointmentId
-            }),
-            contentType: "application/json",
-            dataType: "json",
-            success: function(response) {
-                if (response && response.dates) {
-                    // Update UI with fetched dates (e.g., display in a modal)
-                    console.log("Dates for appointment #" + appointmentId + ":", response.dates);
-                } else {
-                    console.log("No dates found for appointment #" + appointmentId);
-                }
-            },
-            error: function(response) {
-                console.error("Error fetching appointment dates:", response);
-            }
-        });
     }
 });
