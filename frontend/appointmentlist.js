@@ -9,50 +9,80 @@ $(function () {
         $.ajax({
             url: "../backend/api/api.php",
             type: "POST",
-            data: 
-            JSON.stringify({
+            data: JSON.stringify({
                 action: "getAllAppointments"
             }),
             contentType: "application/json",
             dataType: "json",
-            success: function(response) 
-            {
+            success: function(response) {
                 if (response) {
                     // Clear existing appointments (if there are any)
                     $("#appointments").empty();
 
                     // Append each appointment to the list
-                    response.forEach(function(appt, i) 
-                    {
-                        if(appt.expired === 0) // If the appointment has not expired, it is selectable
-                        {
-                            $("#appointments").append
-                            (
-                                "<li class='list-group-item'>" +
-                                    "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "'>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + "</label>" + 
-                                "</li>"
-                            );
+                    response.forEach(function(appt, i) {
+                        const appointmentItem = $("<li class='list-group-item'></li>");
+                        const appointmentLabel = $("<label class='form-check-label'></label>");
+
+                        if (appt.expired === 0) {
+                            appointmentLabel.text("#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author);
+                        } else {
+                            appointmentLabel.text("#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + " (Expired)");
                         }
-                        else // Otherwise it is disabled and marked as "(Expired)"
-                        {
-                            $("#appointments").append
-                            (
-                                "<li class='list-group-item'>" +
-                                    "<input class='form-check-input me-1' type='checkbox' value='' id='appointment" + appt.id + "' disabled>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "'>#" + appt.id + " | Name: " + appt.name + ", Author: " + appt.author + " (Expired)</label>" + 
-                                "</li>"
-                            );
-                        }
+
+                        // Create a container for dates (initially hidden)
+                        const datesContainer = $("<div class='dates-container'></div>");
+
+                        // Add dates to the container
+                        appt.dates.forEach(function(date) {
+                            datesContainer.append("<p>Date: " + date.day + ", Start: " + date.starttime + ", End: " + date.endtime + "</p>");
+                        });
+
+                        // Append everything to the list item
+                        appointmentItem.append(appointmentLabel, datesContainer);
+                        $("#appointments").append(appointmentItem);
+
+                        // Toggle behavior when appointment is clicked
+                        appointmentLabel.on("click", function() {
+                            datesContainer.toggle(); // Toggle visibility
+                        });
                     });
-                }
-                else 
-                {
+                } else {
                     console.log("No appointments found.");
                 }
             },
             error: function(response) {
                 console.error("Error fetching appointments:", response);
+            }
+        });
+    }
+
+    $("#appointments").on("click", "li", function() {
+        const appointmentId = $(this).find("input").attr("id").replace("appointment", "");
+        getAppointmentDates(appointmentId);
+    });
+
+    // Fetch appointment dates
+    function getAppointmentDates(appointmentId) {
+        $.ajax({
+            url: "../backend/api/api.php",
+            type: "POST",
+            data: JSON.stringify({
+                action: "getAppointmentDates",
+                appointmentId: appointmentId
+            }),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response) {
+                if (response && response.dates) {
+                    // Update UI with fetched dates (e.g., display in a modal)
+                    console.log("Dates for appointment #" + appointmentId + ":", response.dates);
+                } else {
+                    console.log("No dates found for appointment #" + appointmentId);
+                }
+            },
+            error: function(response) {
+                console.error("Error fetching appointment dates:", response);
             }
         });
     }

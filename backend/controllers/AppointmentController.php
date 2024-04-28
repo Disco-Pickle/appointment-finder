@@ -11,14 +11,14 @@ class AppointmentController
         $this->db = $database->getConnection();
     } //-----------------------------------------
     //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
-    public function addAppointment($author, $name, $dates)
+    public function addAppointment($author, $name, $expired, $dates)
     {
         $this->db->beginTransaction();
     
         try {
             // Insert appointment data into the 'appointment' table
-            $stmt = $this->db->prepare("INSERT INTO appointment (author, name) VALUES (?, ?)");
-            $stmt->execute([$author, $name]);
+            $stmt = $this->db->prepare("INSERT INTO appointment (author, name, expired) VALUES (?, ?, ?)");
+            $stmt->execute([$author, $name ,$expired]);
             $appointmentId = $this->db->lastInsertId();
     
             foreach ($dates as $date) {
@@ -90,7 +90,6 @@ class AppointmentController
             throw $e;
         }
     }
-    
 }
 
     //---------------------------------------------------------------------
