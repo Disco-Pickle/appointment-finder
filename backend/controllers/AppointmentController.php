@@ -55,7 +55,7 @@ class AppointmentController
             //          }
     
             //echo json_encode($appointments);
-                echo $appointments;
+              //  echo $appointments;
             return $appointments;
         } catch (Exception $e) {
             throw $e;
@@ -82,16 +82,23 @@ class AppointmentController
             throw $e;
         }
     }
-    public function insertDates($day,$startime,$endtime,$persons,$appointmentId){
+
+    public function insertDates($dates, $appointmentId)
+    {
         $this->db->beginTransaction();
         try {
-            $stmt=$this->db->prepare('INSERT into dates(day,starttime,endtime,persons,fk_idappointment)VALUES (?,?,?,?,?)');
-            $stmt->execute([$day,$startime,$endtime,$persons,$appointmentId]);
-        }catch (Exception $e) {
+            $stmt = $this->db->prepare('INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)');
+            foreach ($dates as $date) {
+                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $appointmentId]);
+            }
+            $this->db->commit(); // Commit the transaction after successful execution
+            return  ['message' => 'Date added to Appointment', 'appointmentId' => $appointmentId]; 
+        } catch (Exception $e) {
+            $this->db->rollBack(); // Roll back the transaction in case of an exception
             throw $e;
         }
-
     }
+    //-------------------------------------------------------------------------------------------------------------------------
     public function getAppointmentDates($appointmentId)
     {
         try {
