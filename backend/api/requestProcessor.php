@@ -17,6 +17,7 @@ class RequestProcessor
         if ($method == "POST") {
             if (isset($requestInput['action'])) {
                 switch ($requestInput['action']) {
+                    //--------------------------------------------------------
                     case 'addAppointment':
                         if (isset($requestInput['author'])&&isset($requestInput['name'])&&isset($requestInput['expired'])&&isset($requestInput['dates'])) {
                             $author= $requestInput['author'];
@@ -25,12 +26,20 @@ class RequestProcessor
                             $dates= $requestInput['dates'];
                         }else echo 'json error';
                         return $this->appointmentController->addAppointment($author,$name,$expired,$dates);
+                    //--------------------------------------------------------
                     case 'insertDates':
                         if (isset($requestInput['dates'])&&isset($requestInput['appointmentId'])){
                             $dates=$requestInput['dates'];
                             $appointmentId=$requestInput['appointmentId'];
                     }else echo "json error";
                     return $this->appointmentController->insertDates($dates,$appointmentId);
+                    //--------------------------------------------------------
+                    case "deleteAppointmentById":
+                        if (isset($requestInput["appointmentId"])){
+                            $appointmentId=$requestInput["appointmentId"];
+                        }else echo "json error";
+                        return $this->appointmentController->deleteAppointmentById($appointmentId);
+                    //--------------------------------------------------------
                     case 'getAppointment':
                         // Assuming you have an appointment ID in the requestInput
                         $appointmentId = $requestInput['appointmentId'];
@@ -38,10 +47,13 @@ class RequestProcessor
                         return $appointment;
                         // Process the retrieved appointment data (e.g., print or return it)
                         // Example: echo json_encode($appointment);
+                    //--------------------------------------------------------
                     case 'getAllAppointments':
                         return $this->appointmentController->getAllAppointments();
+                    //--------------------------------------------------------
                     case 'getAppointmentDates':
                         return $this->appointmentController->getAppointmentDates($requestInput['appointmentId']);
+                    //--------------------------------------------------------
                     default:
                         echo "RequstInput Error";         
                         return ['error' => 'Invalid action'];               

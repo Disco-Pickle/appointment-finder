@@ -42,6 +42,27 @@ class AppointmentController
             throw $e;
         }
     }
+    public function deleteAppointmentById($appointmentId)
+{
+    $this->db->beginTransaction();
+    try {
+        
+        $stmt = $this->db->prepare("DELETE FROM dates WHERE fk_idappointment = ?");
+        $stmt->execute([$appointmentId]);
+        // Delete the appointment from the 'appointment' table
+        $stmt = $this->db->prepare("DELETE FROM appointment WHERE id = ?");
+        $stmt->execute([$appointmentId]);
+
+        // Also delete associated dates from the 'dates' table
+       
+
+        $this->db->commit(); // Commit the transaction after successful deletion
+        return ['message' => 'Appointment deleted successfully'];
+    } catch (Exception $e) {
+        $this->db->rollBack(); // Roll back the transaction in case of an exception
+        throw $e;
+    }
+}
     public function getAllAppointments()
     {
         try {
