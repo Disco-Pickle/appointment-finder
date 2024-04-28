@@ -49,9 +49,6 @@ $(function () {
                                 "</li>"
                             );
                         }
-                       
-                        // Create a container for dates (initially hidden)
-                        const datesContainer = $("<div class='dates-container'></div>");
 
                         // Appends appointment dates of this appointment
                         /* appendAppointmentDates(appt.id); */
@@ -108,6 +105,7 @@ $(function () {
                         {
                         $("#appointment" + appt.id + "date" + ???).toggle(); // Toggle visibility
                         });
+                        */
                       
                     });
                 }
