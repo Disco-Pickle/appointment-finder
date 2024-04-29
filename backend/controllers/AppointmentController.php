@@ -11,8 +11,12 @@ class AppointmentController
         $this->db = $database->getConnection();
     } //-----------------------------------------
     //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
-    public function addAppointment($author, $name, $expired, $dates)
+    public function addAppointment($payload)
     {
+	$author=$payload['author'];
+	$name=$payload['name'];
+	$expired=$payload['expired'];
+	$dates=$payload['dates'];
         $this->db->beginTransaction();
     
         try {
