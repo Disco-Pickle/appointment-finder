@@ -13,30 +13,24 @@ class AppointmentController
     //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
     public function addAppointment($payload)
     {
-	$author=$payload['author'];
-	$name=$payload['name'];
-	$expired=$payload['expired'];
 	$dates=$payload['dates'];
         $this->db->beginTransaction();
     
         try {
             // Insert appointment data into the 'appointment' table
             $stmt = $this->db->prepare("INSERT INTO appointment (author, name, expired) VALUES (?, ?, ?)");
-            $stmt->execute([$author, $name ,$expired]);
+            $stmt->execute([$payload['author'], $payload['name'],$payload['expired']]);
             $appointmentId = $this->db->lastInsertId();
     
             foreach ($dates as $date) {
-                // Check that all necessary keys are present in the date
                 if (!isset($date['day'], $date['starttime'], $date['endtime'])) {
                     throw new Exception('A date is missing one or more necessary keys.');
                 }
-            
-                // Insert date data into the 'dates' table
                 $stmt = $this->db->prepare("INSERT INTO dates (day, starttime, endtime, fk_idappointment) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $appointmentId]);
             }
             
-            if(!($this->db->commit())){return ['message'=> 'errorrrrrrr'];}
+            $this->db->commit();
             
             return ['message' => 'Appointment added to DB', 'appointmentId' => $appointmentId];
 
@@ -73,15 +67,7 @@ class AppointmentController
             $stmt = $this->db->prepare("SELECT id, author, name, expired FROM appointment");
             $stmt->execute();
             $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-            // You can also fetch associated dates for each appointment if needed
-            // Example: foreach ($appointments as &$appointment) {
-            //              $appointment['dates'] = $this->getAppointmentDates($appointment['id']);
-            //          }
-    
-            //echo json_encode($appointments);
-              //  echo $appointments;
-            return $appointments;
+           return $appointments;
         } catch (Exception $e) {
             throw $e;
         }
@@ -98,10 +84,7 @@ class AppointmentController
             if (!$appointment) {
                 throw new Exception('Appointment not found.');
             }
-    
-            // You can also fetch associated dates for this appointment if needed
-            // Example: $appointment['dates'] = $this->getAppointmentDates($appointmentId);
-            echo json_encode($appointment);
+           echo json_encode($appointment);
             return $appointment;
         } catch (Exception $e) {
             throw $e;
@@ -137,26 +120,3 @@ class AppointmentController
         }
     }
 }
-
-    //---------------------------------------------------------------------
-    //---------------------------------------------------------------------------Request Router
-    /*
-    public function handleRequest($method, $input)
-{
-    if ($method == 'POST') {
-        if (isset($input['action']) && $input['action'] == 'addAppointment') {
-            $dates = $input['dates'];
-            $this->addAppointment(
-                $input['author'],
-                $input['name'],
-                $dates
-            );
-        }
-    }
-}
-
-    //-----------------------------------------
-    */
-
-#$controller = new AppointmentController();
-#$controller->handleRequest($method,$input);
