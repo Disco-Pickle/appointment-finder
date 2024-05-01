@@ -10,7 +10,7 @@ $response = $requestProcessor->handleRequest($method, $requestInput);//send requ
 
 //handle response cases
 if ($response === null) {
-  response("GET", 418, null);
+  response("GET", 405, null);
 } else {
   response("GET", 200 , $response);
 }
