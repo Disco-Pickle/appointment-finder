@@ -52,26 +52,24 @@ $(function ()
         }
         console.log("Dates: ", dates);
 
-        // Construct the JSON payload
-        const payload = {
-            action: "addAppointment",
-            author: author,
-            name: name,
-            expired: expired,
-            dates: dates
-        };
-
         // Send data to DB
         $.ajax
         ({
             type: "POST",
             url: "../backend/api/api.php",
             cache: false,
-            data: JSON.stringify(payload), // Convert to JSON string
+            data: 
+            JSON.stringify({ // Convert to JSON string
+                action: "addAppointment",
+                author: author,
+                name: name,
+                expired: expired,
+                dates: dates
+            }), 
             contentType: "application/json", // Set content type
-            success: function()
+            success: function(response)
             {
-                console.log("Appointment data successfully sent to database");
+                console.log("Appointment data successfully sent to database", response);
 
                 // Clearing all fields and reloading site
                 $("#name").val("");
@@ -82,9 +80,9 @@ $(function ()
                 $("#endtime1").val("");
                 location.reload();
             },
-            error: function()
+            error: function(response)
             {
-                console.log("ERROR: Sending appointment data to database failed");
+                console.log("ERROR: Sending appointment data to database failed", response);
             }
         })
     });
