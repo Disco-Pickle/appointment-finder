@@ -45,6 +45,11 @@ class RequestProcessor
 		    }else echo "json error";
 		    return $this->appointmentController->deleteAppointmentById($appointmentId);
 		    //--------------------------------------------------------
+		case "getComments":
+			if(isset($requestInput['appointmentId'])){
+				return $this->appointmentController->getComments($requestInput['appointmentId']);
+			}else echo "json error";
+			break;	
 		case 'getAppointment':
 		    // Assuming you have an appointment ID in the requestInput
 		    $appointmentId = $requestInput['appointmentId'];

@@ -151,6 +151,22 @@ public function insertComment($name, $commentString, $appointmentId) {
         throw $e;
     }
 }
+public function getComments($appointmentId) {
+    try {
+        // Prepare the SQL statement
+        $stmt = $this->db->prepare('SELECT * FROM comments WHERE appointmentId_fk = ?');
+
+        // Execute the statement with the appointment ID
+        $stmt->execute([$appointmentId]);
+
+        // Fetch all comments
+        $comments = $stmt->fetchAll();
+
+        return ['message' => 'Comments fetched', 'appointmentId' => $appointmentId, 'comments' => $comments];
+    } catch (Exception $e) {
+        throw $e;
+    }
+}
 
 
     //-------------------------------------------------------------------------------------------------------------------------
