@@ -12,7 +12,7 @@ class AppointmentController
         $this->db = $database->getConnection();
     } 
     //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
-    public function addAppointment($payload)
+/*    public function addAppointment($payload)
     {
 	$dates=$payload['dates'];
         $this->db->beginTransaction();
@@ -41,7 +41,27 @@ class AppointmentController
             $this->db->rollBack();
             throw $e;
         }
+    }*/public function addAppointment($payload)
+{
+    $this->db->beginTransaction();
+
+    try {
+        // Insert appointment data into the 'appointment' table using appointment object
+        $stmt = $this->db->prepare("INSERT INTO appointment (author, name, expired) VALUES (?, ?, ?)");
+        $appointment = new Appointment($payload['author'], $payload['name'], $payload['expired'],$payload['persons']?? null);
+        $stmt->execute([$appointment->author, $appointment->name, $appointment->expired]);
+        $appointmentId = $this->db->lastInsertId();
+
+        $this->db->commit();
+
+        return ['message' => 'Appointment added to DB', 'appointmentId' => $appointmentId];
+
+    } catch (Exception $e) {
+        $this->db->rollBack();
+        throw $e;
     }
+}
+
     public function deleteAppointmentById($appointmentId)
 {
     $this->db->beginTransaction();
