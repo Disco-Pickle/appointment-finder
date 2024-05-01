@@ -20,7 +20,6 @@ http://192.168.0.22:8080
 - When adding dates, but not entering any data, this either results in no data being parsed or data entered further up being parsed again: This needs a fix. As long as all added dates are also filled in correctly, there is no issue
 
 ## To-Dos
-- addPersons() is needed to add persons to specific dates of an appointment
-- Add a button (and function) that sends selected appointment dates and entered name to DB
 - Create a button that calls deleteAllExpired
 - Create a button per appointment that deletes the appointment
+- Append attendees and amount of attendees to each date

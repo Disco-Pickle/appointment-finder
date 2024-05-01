@@ -20,7 +20,7 @@ $(function () {
             dataType: "json",
             success: function(appointments) 
             {
-                if (appointments) 
+                if(appointments) 
                 {
                     // Clear existing appointments (if there are any)
                     $("#appointments").empty();
@@ -165,6 +165,8 @@ $(function () {
                     success: function(response)
                     {
                         console.log("Persons added to specified dates", response);
+                        location.reload();
+
                     },
                     error: function(response)
                     {
