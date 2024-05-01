@@ -10,13 +10,13 @@ class CommentsController
         $database = new Database();
         $this->db = $database->getConnection();
     }
-    public function insertComment($name, $commentString, $appointmentId) {
+    public function insertComment($payload) {
     $this->db->beginTransaction();
     try {
         $stmt = $this->db->prepare('INSERT INTO comments (name, commentString, appointmentId_fk) VALUES (?, ?, ?)');
-        $stmt->execute([$name, $commentString, $appointmentId]);
+        $stmt->execute([$payload["name"], $payload["commentString"], $payload["appointmentId"]]);
         $this->db->commit();
-        return ['message' => 'Comment added', 'appointmentId' => $appointmentId];
+        return ['message' => 'Comment added', 'appointmentId' => $payload["appointmentId"] ];
     } catch (Exception $e) {
         $this->db->rollBack();
         throw $e;

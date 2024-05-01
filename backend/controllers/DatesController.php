@@ -11,16 +11,17 @@ class DatesController
     }
 
 
-    public function insertDates($dates, $appointmentId)
+    public function insertDates($payload)
     {
+        $dates=$payload['dates'];
         $this->db->beginTransaction();
         try {
             $stmt = $this->db->prepare('INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)');
             foreach ($dates as $date) {
-                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $appointmentId]);
+                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $payload['appointmentId']]);
             }
             $this->db->commit(); // Commit the transaction after successful execution
-            return  ['message' => 'Date added to Appointment', 'appointmentId' => $appointmentId]; 
+            return  ['message' => 'Date added to Appointment', 'appointmentId' =>  $payload['appointmentId']]; 
         } catch (Exception $e) {
             $this->db->rollBack(); // Roll back the transaction in case of an exception
             throw $e;
@@ -54,23 +55,24 @@ class DatesController
     }
     
 
-    public function updatePersons($dateId, $persons) {
+    public function updatePersons($payload) {
         $this->db->beginTransaction();
+        $persons= $payload['persons'];
         try {
             
             $stmt = $this->db->prepare('SELECT persons FROM dates WHERE id = ?');
-            $stmt->execute([$dateId]);
+            $stmt->execute([$payload['dateId']]);
             $currentPersons = $stmt->fetchColumn();
 
             $currentPersonsArray = $currentPersons ? explode(", ", $currentPersons) : [];
             $mergedPersonsArray = array_merge($currentPersonsArray, $persons);
             $mergedPersonsStr = implode(", ", $mergedPersonsArray);
             $stmt = $this->db->prepare('UPDATE dates SET persons = ? WHERE id = ?');
-            $stmt->execute([$mergedPersonsStr, $dateId]);
+            $stmt->execute([$mergedPersonsStr, $payload['dateId']]);
     
             $this->db->commit();
     
-            return ['message' => 'Persons updated for date', 'dateId' => $dateId];
+            return ['message' => 'Persons updated for date', 'dateId' => $payload['dateId']];
         } catch (Exception $e) {
             $this->db->rollBack();
             throw $e;
