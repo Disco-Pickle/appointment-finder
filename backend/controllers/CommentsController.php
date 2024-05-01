@@ -9,7 +9,7 @@ class CommentsController
     {
         $database = new Database();
         $this->db = $database->getConnection();
-    }
+    }//inser using object
     public function insertComment($payload) {
     $this->db->beginTransaction();
     try {

@@ -1,5 +1,6 @@
 <?php
 require_once '../utilities/Database.php';
+require_once '../models/Appointment.php';
 class AppointmentController
 {
     private $db;
@@ -17,9 +18,10 @@ class AppointmentController
         $this->db->beginTransaction();
     
         try {
-            // Insert appointment data into the 'appointment' table
+            // Insert appointment data into the 'appointment' table using appointment object
             $stmt = $this->db->prepare("INSERT INTO appointment (author, name, expired) VALUES (?, ?, ?)");
-            $stmt->execute([$payload['author'], $payload['name'],$payload['expired']]);
+            $appointment=new Appointment($payload['author'],$payload['name'],$payload['expired'],json_encode($dates));
+            $stmt->execute([$appointment->author,$appointment->name,$appointment->expired]);
             $appointmentId = $this->db->lastInsertId();
     
             foreach ($dates as $date) {
@@ -44,14 +46,13 @@ class AppointmentController
 {
     $this->db->beginTransaction();
     try {
-        
+         // Also delete associated dates from the 'dates' table
         $stmt = $this->db->prepare("DELETE FROM dates WHERE fk_idappointment = ?");
         $stmt->execute([$appointmentId]);
         // Delete the appointment from the 'appointment' table
         $stmt = $this->db->prepare("DELETE FROM appointment WHERE id = ?");
         $stmt->execute([$appointmentId]);
 
-        // Also delete associated dates from the 'dates' table
        
 
         $this->db->commit(); // Commit the transaction after successful deletion
@@ -73,7 +74,7 @@ class AppointmentController
         }
     }
     
-    
+    //helper function just in case
     public function getAppointmentById($appointmentId)
     {
         try {

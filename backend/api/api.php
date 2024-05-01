@@ -1,14 +1,14 @@
 <?php
 require_once '../config/init.php';
-//get method and
+//get method and request data
 $method = $_SERVER['REQUEST_METHOD'];
-//$request = isset($_SERVER['PATH_INFO']) ? explode('/', trim($_SERVER['PATH_INFO'], '/')) : [];
-
 $requestInput = json_decode(file_get_contents('php://input'), true);
 
 $requestProcessor = new RequestProcessor;
-$response = $requestProcessor->handleRequest($method, $requestInput);//send request to 
+$response = $requestProcessor->handleRequest($method, $requestInput);//send request along
 
+
+//handle response cases
 if ($response === null) {
   response("GET", 418, null);
 } else {
