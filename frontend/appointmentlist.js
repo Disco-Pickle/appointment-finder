@@ -79,7 +79,7 @@ $(function () {
                                                 "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + " (" + date.personCount + " prs.)" + "</label>" + 
                                             "</li>"
                                         );
-                                        amtDates++;
+                                        amtDates++; // Increment amtDates so the confirm button can receive its data attribute containing this information
                                     });
 
                                     // Appends input field for name, a button for confirming datees, and a button for deleting the appt to this appointment
@@ -92,7 +92,20 @@ $(function () {
                                         "<hr>" + 
                                         "<button class='btn btn-success btnConfirmDates' data-apptid='" + appt.id + "' data-amtdates='" + amtDates + "'>Confirm Dates</button> " + 
                                         "<button class='btn btn-danger btnDeleteAppt' data-apptid='" + appt.id + "'>Delete Appointment</button>"
-                                    ); 
+                                    );
+
+                                    // Appends the comment section
+                                    $("#appointmentLabel" + appt.id).append
+                                    (
+                                        "<hr>" + 
+                                        "<div class='form-floating'>" + 
+                                            "<input type='text' class='form-control' name='newCommenter' id='newCommenter" + appt.id + "' placeholder='Commenter'>" + 
+                                            "<label for='newCommenter'>Commenter</label>" + 
+                                        "</div>" +
+                                        "<textarea id='newComment" + appt.id + "' rows='4' cols='50'></textarea>" + 
+                                        "<hr>" + 
+                                        "<button class='btn btn-success btnComment' data-apptid='" + appt.id + "'>Comment</button> "
+                                    )
                                 },
                                 error: function(dates) 
                                 {
@@ -169,10 +182,21 @@ $(function () {
                             });
                         } 
                     })
+
+                    // Appending the comment section
+                    appointments.forEach(function(appt, i)
+                    {
+                        
+                    });
                 }
-                else 
+                else
                 {
+                    // Output to website and console: No appointments found
                     console.log("No appointments found.");
+                    $("#appointments").append
+                    (
+                        "<li class='list-group-item'>No appointments found</li>"
+                    );
                 }
             },
             error: function(appointments) 
@@ -262,5 +286,41 @@ $(function () {
                 console.log("ERROR: Appointment deletion failed", response);
             }            
         })
+    }
+
+    // Clicking the comment button
+    $(document).on("click", ".btnComment", function()
+    {
+        let apptID = $(this).data("apptid"); // The data attributes are used to get the necessary parameters for confirmDates
+        comment(apptID);
+    });
+
+    // Sending the comment to the DB
+    function comment(apptID)
+    {
+        $.ajax
+        ({
+            url: "../backend/api/api.php",
+            type: "POST",
+            data: 
+            JSON.stringify({
+                action: "insertComment",
+                name: $("#newCommenter" + apptID).val(),
+                commentString: $("#newComment" + apptID).val(),
+                appointmentId: apptID
+            }),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response)
+            {
+                console.log("Comment added", response);
+                location.reload();
+
+            },
+            error: function(response)
+            {
+                console.log("ERROR: Adding comment failed", response);
+            }            
+        })        
     }
 });
