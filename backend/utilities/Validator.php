@@ -1,6 +1,16 @@
 <?php
 class Validator
 {
+    public function prepareAction($action){
+        $action=htmlspecialchars($action);
+        return $action;       
+    }
+    public function prepareAppointmentId($payload){
+        if(isset($payload["appointmentId"])){
+        $id=htmlspecialchars($payload["appointmentId"]);
+        return $id;
+    }else return [ "AppointmentId"=> "invalid"];
+    }
     public function prepareAddAppointment($payload)
     {
         if (

@@ -21,7 +21,8 @@ class RequestProcessor
     {
 	if ($method == "POST") {
 	    if (isset($requestInput['action'])) {
-		switch ($requestInput['action']) {
+			$action = $this->validator->prepareAction($requestInput['action']);
+		switch ($action) {
 		    //--------------------------------------------------------
 		case 'addAppointment':
 		    $appointmentData= $this->validator->prepareAddAppointment($requestInput);
@@ -38,18 +39,14 @@ class RequestProcessor
 			$commentData=$this->validator->prepareInsertComment($requestInput);
 			return $this->commentsController->insertComment($commentData);
 		case "deleteAppointmentById":
-		    if (isset($requestInput["appointmentId"])){
-			$appointmentId=$requestInput["appointmentId"];
-		    }else echo "json error";
+		    $appointmentId=$this->validator->prepareAppointmentId($requestInput);
 		    return $this->appointmentController->deleteAppointmentById($appointmentId);
 		    //--------------------------------------------------------
 		case "getComments":
-			if(isset($requestInput['appointmentId'])){
-				return $this->commentsController->getComments($requestInput['appointmentId']);
-			}else echo "json error";
-			break;	
+			$appointmentId=$this->validator->prepareAppointmentId($requestInput);
+				return $this->commentsController->getComments($appointmentId);	
 		case 'getAppointment':
-		    $appointmentId = $requestInput['appointmentId'];
+		    $appointmentId = $this->validator->prepareAppointmentId($requestInput);
 		    $appointment = $this->appointmentController->getAppointmentById($appointmentId);
 		    return $appointment;
 		    //--------------------------------------------------------
@@ -57,7 +54,8 @@ class RequestProcessor
 		    return $this->appointmentController->getAllAppointments();
 		    //--------------------------------------------------------
 		case 'getAppointmentDates':
-		    return $this->datesController->getAppointmentDates($requestInput['appointmentId']);
+				$appointmentId=$this->validator->prepareAppointmentId($requestInput);
+		    return $this->datesController->getAppointmentDates($appointmentId);
 		    //--------------------------------------------------------
 		default:
 		    echo "RequstInput Error";         
