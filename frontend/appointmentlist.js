@@ -93,8 +93,49 @@ $(function () {
                                         "<button class='btn btn-success btnConfirmDates' data-apptid='" + appt.id + "' data-amtdates='" + amtDates + "'>Confirm Dates</button> " + 
                                         "<button class='btn btn-danger btnDeleteAppt' data-apptid='" + appt.id + "'>Delete Appointment</button>"
                                     );
+                                    
+                                    // Appends the comment section (current comments part)
+                                    $.ajax
+                                    ({
+                                        url: "../backend/api/api.php",
+                                        type: "POST",
+                                        data: 
+                                        JSON.stringify({
+                                            action: "getComments",
+                                            appointmentId: appt.id
+                                        }),
+                                        contentType: "application/json",
+                                        dataType: "json",
+                                        success: function(comments) 
+                                        {
+                                            console.log("Comments fetched successfully", comments);
 
-                                    // Appends the comment section
+                                            // Create new list for this appointment's dates
+                                            $("#appointmentLabel" + appt.id).append
+                                            (
+                                                "<ul class='list-group' id='comments" + appt.id + "'</ul>"
+                                            );
+
+                                            // Appending each comment
+                                            comments.forEach(function(comment, i)
+                                            {
+                                                $("#appointmentDates" + appt.id).append
+                                                (
+                                                    "<li class='list-group-item'>" + 
+                                                        "<input disabled class='form-control' type='text' id='commentName" + appt.id + "no" + i + "' placeholder='" + comment.name + "'>" + 
+                                                        "<input disabled class='form-control' type='text' id='commentString" + appt.id + "no" + i + "' placeholder='" + comment.string + "'>" + 
+                                                    "</li>"
+                                                );
+                                            });
+                                        },
+                                        error: function(comments)
+                                        {
+                                            console.log("No comments or ERROR: Fetching comments failed", comments);
+                                        }
+
+                                    });
+
+                                    // Appends the comment section (new comment part)
                                     $("#appointmentLabel" + appt.id).append
                                     (
                                         "<hr>" + 
