@@ -55,7 +55,7 @@ class DatesController
         }
     }
     
-
+//append persons
     public function updatePersons($payload) {
         $this->db->beginTransaction();
         $persons= $payload['persons'];
