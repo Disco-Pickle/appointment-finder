@@ -43,32 +43,26 @@ class AppointmentController
     public function updatePersons($dateId, $persons) {
         $this->db->beginTransaction();
         try {
-            // First, get the current persons
+            
             $stmt = $this->db->prepare('SELECT persons FROM dates WHERE id = ?');
             $stmt->execute([$dateId]);
             $currentPersons = $stmt->fetchColumn();
-    
-            // Convert the current persons string to an array
-            $currentPersonsArray = explode(", ", $currentPersons);
-    
-            // Merge the current persons array with the new persons array
+
+            $currentPersonsArray = $currentPersons ? explode(", ", $currentPersons) : [];
             $mergedPersonsArray = array_merge($currentPersonsArray, $persons);
-    
-            // Convert the merged persons array back to a string
             $mergedPersonsStr = implode(", ", $mergedPersonsArray);
-    
-            // Now, update the persons with the merged persons string
             $stmt = $this->db->prepare('UPDATE dates SET persons = ? WHERE id = ?');
             $stmt->execute([$mergedPersonsStr, $dateId]);
     
-            $this->db->commit(); // Commit the transaction after successful execution
+            $this->db->commit();
     
             return ['message' => 'Persons updated for date', 'dateId' => $dateId];
         } catch (Exception $e) {
-            $this->db->rollBack(); // Roll back the transaction in case of an exception
+            $this->db->rollBack();
             throw $e;
         }
     }
+    
     
 
     public function deleteAppointmentById($appointmentId)
