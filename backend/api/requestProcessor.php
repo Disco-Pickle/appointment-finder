@@ -63,7 +63,7 @@ class RequestProcessor
 		    echo "RequstInput Error";         
 		    return ['error' => 'Invalid action'];               
 		}
-	    }else echo "Request Input: " . json_encode($requestInput) . "\n";
+	    }else return ['action' => 'invalid'];
 
 	}else {
 	    http_response_code(418);
