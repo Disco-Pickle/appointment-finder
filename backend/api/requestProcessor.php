@@ -34,6 +34,11 @@ class RequestProcessor
 				return $this->appointmentController->updatePersons($requestInput["dateId"],$requestInput["persons"]);
 			}else echo "json error";
 			break;
+		case "insertComment":
+			if(isset($requestInput["appointmentId"])&&isset($requestInput["name"])&&isset( $requestInput["commentString"])){
+				return $this->appointmentController->insertComment($requestInput['name'],$requestInput['commentString'],$requestInput['appointmentId']);
+			}else echo "json error";
+			break;
 		case "deleteAppointmentById":
 		    if (isset($requestInput["appointmentId"])){
 			$appointmentId=$requestInput["appointmentId"];

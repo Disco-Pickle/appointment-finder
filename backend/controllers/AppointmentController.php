@@ -39,17 +39,27 @@ class AppointmentController
             $this->db->rollBack();
             throw $e;
         }
-    }public function updatePersons($dateId, $persons) {
+    }
+    public function updatePersons($dateId, $persons) {
         $this->db->beginTransaction();
         try {
-            // Prepare the SQL statement
+            // First, get the current persons
+            $stmt = $this->db->prepare('SELECT persons FROM dates WHERE id = ?');
+            $stmt->execute([$dateId]);
+            $currentPersons = $stmt->fetchColumn();
+    
+            // Convert the current persons string to an array
+            $currentPersonsArray = explode(", ", $currentPersons);
+    
+            // Merge the current persons array with the new persons array
+            $mergedPersonsArray = array_merge($currentPersonsArray, $persons);
+    
+            // Convert the merged persons array back to a string
+            $mergedPersonsStr = implode(", ", $mergedPersonsArray);
+    
+            // Now, update the persons with the merged persons string
             $stmt = $this->db->prepare('UPDATE dates SET persons = ? WHERE id = ?');
-    
-            // Convert the persons array to a string
-            $personsStr = implode(", ", $persons);
-    
-            // Execute the statement with the persons string and the date ID
-            $stmt->execute([$personsStr, $dateId]);
+            $stmt->execute([$mergedPersonsStr, $dateId]);
     
             $this->db->commit(); // Commit the transaction after successful execution
     
@@ -60,6 +70,7 @@ class AppointmentController
         }
     }
     
+
     public function deleteAppointmentById($appointmentId)
 {
     $this->db->beginTransaction();
@@ -126,6 +137,22 @@ class AppointmentController
             throw $e;
         }
     }
+
+
+public function insertComment($name, $commentString, $appointmentId) {
+    $this->db->beginTransaction();
+    try {
+        $stmt = $this->db->prepare('INSERT INTO comments (name, commentString, appointmentId_fk) VALUES (?, ?, ?)');
+        $stmt->execute([$name, $commentString, $appointmentId]);
+        $this->db->commit();
+        return ['message' => 'Comment added', 'appointmentId' => $appointmentId];
+    } catch (Exception $e) {
+        $this->db->rollBack();
+        throw $e;
+    }
+}
+
+
     //-------------------------------------------------------------------------------------------------------------------------
     public function getAppointmentDates($appointmentId)
     {
