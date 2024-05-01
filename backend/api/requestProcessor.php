@@ -64,7 +64,7 @@ class RequestProcessor
 	    }else return ['action' => 'invalid'];
 
 	}else {
-	    http_response_code(418);
+	    http_response_code(405); //418 is better
 	    return ['method' => 'Not Fouond'];
 	   }
     }
