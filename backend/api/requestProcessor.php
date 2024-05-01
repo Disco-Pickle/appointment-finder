@@ -29,6 +29,11 @@ class RequestProcessor
 		    }else echo "json error";
 		    return $this->appointmentController->insertDates($dates,$appointmentId);
 		    //--------------------------------------------------------
+		case "insertPerson":
+			if(isset($requestInput["dateId"])&&isset($requestInput["persons"])){
+				return $this->appointmentController->updatePersons($requestInput["dateId"],$requestInput["persons"]);
+			}else echo "json error";
+			break;
 		case "deleteAppointmentById":
 		    if (isset($requestInput["appointmentId"])){
 			$appointmentId=$requestInput["appointmentId"];
@@ -65,13 +70,16 @@ class RequestProcessor
 
     private function prepareAddAppointment($payload)
     {
-	if (isset($payload['author'])&&isset($payload['name'])&&isset($payload['expired'])&&isset($payload['dates'])) {
-	    $author= $payload['author'];
-	    $name= $payload['name'];
-	    $expired= $payload['expired'];
-	    $dates= $payload['dates'];
-	}else{ echo 'json error';
-	}
-	return compact('author','name','expired','dates');
+	  if (isset($payload['author'])&&isset($payload['name'])
+		&&isset($payload['expired'])&&isset($payload['dates'])
+		&& !empty($payload['author'])&& !empty($payload['name'])) {
+	
+		$author= htmlspecialchars($payload['author']);
+		$name= htmlspecialchars($payload['name']);
+		$expired= htmlspecialchars($payload['expired']);
+		$dates= $payload['dates'];
+	  }else{ echo 'json error';
+	  }
+	  return compact('author','name','expired','dates');
     }
 }

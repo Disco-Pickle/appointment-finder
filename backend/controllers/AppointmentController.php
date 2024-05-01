@@ -39,7 +39,27 @@ class AppointmentController
             $this->db->rollBack();
             throw $e;
         }
+    }public function updatePersons($dateId, $persons) {
+        $this->db->beginTransaction();
+        try {
+            // Prepare the SQL statement
+            $stmt = $this->db->prepare('UPDATE dates SET persons = ? WHERE id = ?');
+    
+            // Convert the persons array to a string
+            $personsStr = implode(", ", $persons);
+    
+            // Execute the statement with the persons string and the date ID
+            $stmt->execute([$personsStr, $dateId]);
+    
+            $this->db->commit(); // Commit the transaction after successful execution
+    
+            return ['message' => 'Persons updated for date', 'dateId' => $dateId];
+        } catch (Exception $e) {
+            $this->db->rollBack(); // Roll back the transaction in case of an exception
+            throw $e;
+        }
     }
+    
     public function deleteAppointmentById($appointmentId)
 {
     $this->db->beginTransaction();
@@ -110,7 +130,7 @@ class AppointmentController
     public function getAppointmentDates($appointmentId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT day, starttime, endtime, persons FROM dates WHERE fk_idappointment = ?");
+            $stmt = $this->db->prepare("SELECT id, day, starttime, endtime, persons FROM dates WHERE fk_idappointment = ?");
             $stmt->execute([$appointmentId]);
             $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
