@@ -1,8 +1,8 @@
 <?php
 require_once '../config/init.php';
-
+//get method and
 $method = $_SERVER['REQUEST_METHOD'];
-$request = isset($_SERVER['PATH_INFO']) ? explode('/', trim($_SERVER['PATH_INFO'], '/')) : [];
+//$request = isset($_SERVER['PATH_INFO']) ? explode('/', trim($_SERVER['PATH_INFO'], '/')) : [];
 
 $requestInput = json_decode(file_get_contents('php://input'), true);
 

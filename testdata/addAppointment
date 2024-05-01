@@ -1,0 +1,20 @@
+{
+    "action": "addAppointment",
+    "author": "John Doe",
+    "name": "Important Meeting",
+    "expired": "2024-05-10",
+    "dates": [
+        {
+            "day": "2024-05-10",
+            "starttime": "14:30:00",
+            "endtime": "16:00:00",
+            "persons": "Bob, Tim, Boby"
+        },
+        {
+            "day": "2024-05-11",
+            "starttime": "09:00:00",
+            "endtime": "10:30:00",
+            "persons": "Alice, Carol"
+        }
+    ]
+}
