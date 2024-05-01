@@ -1,15 +1,20 @@
 <?php
-include_once("../controllers/UserController.php");
+include_once("../controllers/CommentsController.php");
 include_once("../controllers/AppointmentController.php");
-
+include_once("../controllers/DatesController.php");
+include_once("../utilities/Validator.php");
 class RequestProcessor
 {
-    private $userController;
+	private $validator;
+    private $commentsController;
     private $appointmentController;
+	private $datesController;
     public function __construct()
     {
-	$this->userController = new UserController();
+	$this->datesController = new DatesController();
 	$this->appointmentController = new AppointmentController();
+	$this->commentsController = new CommentsController();
+	$this->validator = new Validator();
     }
 
     public function handleRequest($method, $requestInput)
@@ -19,26 +24,19 @@ class RequestProcessor
 		switch ($requestInput['action']) {
 		    //--------------------------------------------------------
 		case 'addAppointment':
-		    $appointmentData= $this->prepareAddAppointment($requestInput);
+		    $appointmentData= $this->validator->prepareAddAppointment($requestInput);
 		    return $this->appointmentController->addAppointment($appointmentData);
 		    //--------------------------------------------------------
 		case 'insertDates':
-		    if (isset($requestInput['dates'])&&isset($requestInput['appointmentId'])){
-			$dates=$requestInput['dates'];
-			$appointmentId=$requestInput['appointmentId'];
-		    }else echo "json error";
-		    return $this->appointmentController->insertDates($dates,$appointmentId);
+		    $datesData= $this->validator->prepareInsertDates($requestInput);
+		    return $this->datesController->insertDates($datesData);
 		    //--------------------------------------------------------
 		case "insertPerson":
-			if(isset($requestInput["dateId"])&&isset($requestInput["persons"])){
-				return $this->appointmentController->updatePersons($requestInput["dateId"],$requestInput["persons"]);
-			}else echo "json error";
-			break;
+			$personData=$this->validator->prepareUpdatePersons($requestInput);
+			return $this->datesController->updatePersons($personData);
 		case "insertComment":
-			if(isset($requestInput["appointmentId"])&&isset($requestInput["name"])&&isset( $requestInput["commentString"])){
-				return $this->appointmentController->insertComment($requestInput['name'],$requestInput['commentString'],$requestInput['appointmentId']);
-			}else echo "json error";
-			break;
+			$commentData=$this->validator->prepareInsertComment($requestInput);
+			return $this->commentsController->insertComment($commentData);
 		case "deleteAppointmentById":
 		    if (isset($requestInput["appointmentId"])){
 			$appointmentId=$requestInput["appointmentId"];
@@ -47,22 +45,19 @@ class RequestProcessor
 		    //--------------------------------------------------------
 		case "getComments":
 			if(isset($requestInput['appointmentId'])){
-				return $this->appointmentController->getComments($requestInput['appointmentId']);
+				return $this->commentsController->getComments($requestInput['appointmentId']);
 			}else echo "json error";
 			break;	
 		case 'getAppointment':
-		    // Assuming you have an appointment ID in the requestInput
 		    $appointmentId = $requestInput['appointmentId'];
 		    $appointment = $this->appointmentController->getAppointmentById($appointmentId);
 		    return $appointment;
-		    // Process the retrieved appointment data (e.g., print or return it)
-		    // Example: echo json_encode($appointment);
 		    //--------------------------------------------------------
 		case 'getAllAppointments':
 		    return $this->appointmentController->getAllAppointments();
 		    //--------------------------------------------------------
 		case 'getAppointmentDates':
-		    return $this->appointmentController->getAppointmentDates($requestInput['appointmentId']);
+		    return $this->datesController->getAppointmentDates($requestInput['appointmentId']);
 		    //--------------------------------------------------------
 		default:
 		    echo "RequstInput Error";         
@@ -78,18 +73,5 @@ class RequestProcessor
 	}
     }
 
-    private function prepareAddAppointment($payload)
-    {
-	  if (isset($payload['author'])&&isset($payload['name'])
-		&&isset($payload['expired'])&&isset($payload['dates'])
-		&& !empty($payload['author'])&& !empty($payload['name'])) {
-	
-		$author= htmlspecialchars($payload['author']);
-		$name= htmlspecialchars($payload['name']);
-		$expired= htmlspecialchars($payload['expired']);
-		$dates= $payload['dates'];
-	  }else{ echo 'json error';
-	  }
-	  return compact('author','name','expired','dates');
-    }
+   
 }

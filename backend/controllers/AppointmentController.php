@@ -9,7 +9,7 @@ class AppointmentController
     {
         $database = new Database();
         $this->db = $database->getConnection();
-    } //-----------------------------------------
+    } 
     //-------------------------------------------------------------------------Add Appointmentpublic function addAppointment($author, $name, $dates)
     public function addAppointment($payload)
     {
@@ -40,31 +40,6 @@ class AppointmentController
             throw $e;
         }
     }
-    public function updatePersons($dateId, $persons) {
-        $this->db->beginTransaction();
-        try {
-            
-            $stmt = $this->db->prepare('SELECT persons FROM dates WHERE id = ?');
-            $stmt->execute([$dateId]);
-            $currentPersons = $stmt->fetchColumn();
-
-            $currentPersonsArray = $currentPersons ? explode(", ", $currentPersons) : [];
-            $mergedPersonsArray = array_merge($currentPersonsArray, $persons);
-            $mergedPersonsStr = implode(", ", $mergedPersonsArray);
-            $stmt = $this->db->prepare('UPDATE dates SET persons = ? WHERE id = ?');
-            $stmt->execute([$mergedPersonsStr, $dateId]);
-    
-            $this->db->commit();
-    
-            return ['message' => 'Persons updated for date', 'dateId' => $dateId];
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            throw $e;
-        }
-    }
-    
-    
-
     public function deleteAppointmentById($appointmentId)
 {
     $this->db->beginTransaction();
@@ -111,67 +86,6 @@ class AppointmentController
             }
            echo json_encode($appointment);
             return $appointment;
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
-    public function insertDates($dates, $appointmentId)
-    {
-        $this->db->beginTransaction();
-        try {
-            $stmt = $this->db->prepare('INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)');
-            foreach ($dates as $date) {
-                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $appointmentId]);
-            }
-            $this->db->commit(); // Commit the transaction after successful execution
-            return  ['message' => 'Date added to Appointment', 'appointmentId' => $appointmentId]; 
-        } catch (Exception $e) {
-            $this->db->rollBack(); // Roll back the transaction in case of an exception
-            throw $e;
-        }
-    }
-
-
-public function insertComment($name, $commentString, $appointmentId) {
-    $this->db->beginTransaction();
-    try {
-        $stmt = $this->db->prepare('INSERT INTO comments (name, commentString, appointmentId_fk) VALUES (?, ?, ?)');
-        $stmt->execute([$name, $commentString, $appointmentId]);
-        $this->db->commit();
-        return ['message' => 'Comment added', 'appointmentId' => $appointmentId];
-    } catch (Exception $e) {
-        $this->db->rollBack();
-        throw $e;
-    }
-}
-public function getComments($appointmentId) {
-    try {
-        // Prepare the SQL statement
-        $stmt = $this->db->prepare('SELECT * FROM comments WHERE appointmentId_fk = ?');
-
-        // Execute the statement with the appointment ID
-        $stmt->execute([$appointmentId]);
-
-        // Fetch all comments
-        $comments = $stmt->fetchAll();
-
-        return ['message' => 'Comments fetched', 'appointmentId' => $appointmentId, 'comments' => $comments];
-    } catch (Exception $e) {
-        throw $e;
-    }
-}
-
-
-    //-------------------------------------------------------------------------------------------------------------------------
-    public function getAppointmentDates($appointmentId)
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT id, day, starttime, endtime, persons FROM dates WHERE fk_idappointment = ?");
-            $stmt->execute([$appointmentId]);
-            $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-            return $dates;
         } catch (Exception $e) {
             throw $e;
         }
