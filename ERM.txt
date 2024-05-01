@@ -1,0 +1,11 @@
++----------------+    +----------------+    +----------------+
+|   Appointment  |    |    Comments    |    |     Dates      |
++----------------+    +----------------+    +----------------+
+| id (PK)        |    | commentId (PK) |    | id (PK)        |
+| author         |    | name           |    | day            |
+| name           |    | commentString  |    | starttime      |
+| expired        |    | appointmentId  |    | endtime        |
++----------------+    | (FK -> Appointment.id) | | persons        |
+                      +----------------+    | fk_idappointment |
+                                            | (FK -> Appointment.id) |
+                                            +----------------+
