@@ -22,4 +22,3 @@ http://192.168.0.22:8080
 ## To-Dos
 - Create a button that calls deleteAllExpired
 - Create a button per appointment that deletes the appointment
-- Append attendees and amount of attendees to each date

@@ -82,7 +82,7 @@ $(function () {
                                         amtDates++;
                                     });
 
-                                    // Appends input field for name and a button for confirming datees to this appointment
+                                    // Appends input field for name, a button for confirming datees, and a button for deleting the appt to this appointment
                                     $("#appointmentLabel" + appt.id).append
                                     (
                                         "<div class='form-floating'>" + 
@@ -90,7 +90,8 @@ $(function () {
                                             "<label for='attendeeName" + appt.id + "'>Your name</label>" + 
                                         "</div>" +
                                         "<hr>" + 
-                                        "<button class='btn btn-success btnConfirmDates' data-apptid='" + appt.id + "' data-amtdates='" + amtDates + "'>Confirm Dates</button>"
+                                        "<button class='btn btn-success btnConfirmDates' data-apptid='" + appt.id + "' data-amtdates='" + amtDates + "'>Confirm Dates</button> " + 
+                                        "<button class='btn btn-danger btnDeleteAppt' data-apptid='" + appt.id + "'>Delete Appointment</button>"
                                     ); 
                                 },
                                 error: function(dates) 
@@ -153,6 +154,13 @@ $(function () {
                                         );
                                         amtDates++;
                                     });
+
+                                    // Appends a button for deleting the appt to this appointment
+                                    $("#appointmentLabel" + appt.id).append
+                                    (
+                                        "<hr>" + 
+                                        "<button class='btn btn-danger btnDeleteAppt' data-apptid='" + appt.id + "'>Delete Appointment</button>"
+                                    ); 
                                 },
                                 error: function(dates) 
                                 {
@@ -176,7 +184,7 @@ $(function () {
 
     // Clicking the confirm button
     $(document).on("click", ".btnConfirmDates", function() // "btnConfirmDates" is defined as a class instead of as an id to allow attaching this function to all buttons without a loop
-    {
+    {                                                      // $(document).on() is necessary as event binding would otherwise happen before buttons are loaded
         let apptID = $(this).data("apptid"); // The data attributes are used to get the necessary parameters for confirmDates
         let amtDates = $(this).data("amtdates");
         confirmDates(apptID, amtDates);
@@ -220,5 +228,39 @@ $(function () {
                 });
             }
         }
+    }
+
+    // Clicking the delete button
+    $(document).on("click", ".btnDeleteAppt", function()
+    {
+        let apptID = $(this).data("apptid"); // The data attributes are used to get the necessary parameters for confirmDates
+        deleteAppointment(apptID);
+    });
+
+    // Deleting the appointment from the DB
+    function deleteAppointment(apptID)
+    {
+        $.ajax
+        ({
+            url: "../backend/api/api.php",
+            type: "POST",
+            data: 
+            JSON.stringify({
+                action: "deleteAppointmentById",
+                appointmentId: apptID
+            }),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response)
+            {
+                console.log("Appointment deleted", response);
+                location.reload();
+
+            },
+            error: function(response)
+            {
+                console.log("ERROR: Appointment deletion failed", response);
+            }            
+        })
     }
 });

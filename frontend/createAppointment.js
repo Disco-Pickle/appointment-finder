@@ -87,33 +87,5 @@ $(function ()
                 console.log("ERROR: Sending appointment data to database failed");
             }
         })
-        
-    /*
-        fetch("../backend/api/api.php", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-})
-.then(response => {
-    if (response.ok) {
-        console.log("Appointment data successfully sent to database");
-    } else {
-        console.log("ERROR: Sending appointment data to database failed");
-    }
-})
-.catch(error => {
-    console.error("Network error:", error);
-});*/
-
-
-
-
-
-
-
-
     });
-
 });
