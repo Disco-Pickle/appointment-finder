@@ -27,19 +27,15 @@ class RequestProcessor
 						case 'addAppointment':
 							$appointmentData = $this->validator->prepareAddAppointment($requestInput);
 							$appointmentResponse = $this->appointmentController->addAppointment($appointmentData);
-						
 							// If the appointment was added successfully, then insert the dates
 							if (isset($appointmentResponse['appointmentId'])) {
 								$datesData = ['dates' => $appointmentData['dates'], 'appointmentId' => $appointmentResponse['appointmentId']];
 								$preparedDatesData = $this->validator->prepareInsertDates($datesData);
 								$datesResponse = $this->datesController->insertDates($preparedDatesData);
 							}
-						
 							// Combine the responses from both controllers
 							$response = array_merge($appointmentResponse, $datesResponse ?? []);
-						
 							return $response;
-						
 						//--------------------------------------------------------
 					case 'insertDates':
 						$datesData = $this->validator->prepareInsertDates($requestInput);
