@@ -32,7 +32,7 @@ function response($method, $httpStatus, $data)
       header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
       break;
     default:
-      http_response_code(418);
+      http_response_code(405);
       echo ("API ERROR");
   }
 }

@@ -125,7 +125,7 @@ $(function () {
                                                 $("#comments" + appt.id).append
                                                 ( 
                                                     "<li class='list-group-item'>" + 
-                                                        "<input disabled class='form-control' type='text' id='commentName" + appt.id + "no" + i + "' placeholder='" + comment.name + "'>" + 
+                                                        "<input disabled class='form-control' type='text' id='commentName" + appt.id + "no" + i + "' placeholder='#" + (i + 1) + " | " + comment.name + "'>" + 
                                                         "<input disabled class='form-control' type='text' id='commentString" + appt.id + "no" + i + "' placeholder='" + comment.commentString + "'>" + 
                                                     "</li>"
                                                 );
@@ -250,7 +250,7 @@ $(function () {
                                                 $("#comments" + appt.id).append
                                                 ( 
                                                     "<li class='list-group-item'>" + 
-                                                        "<input disabled class='form-control' type='text' id='commentName" + appt.id + "no" + i + "' placeholder='" + comment.name + "'>" + 
+                                                        "<input disabled class='form-control' type='text' id='commentName" + appt.id + "no" + i + "' placeholder='#" + (i + 1) + " | " + comment.name + "'>" + 
                                                         "<input disabled class='form-control' type='text' id='commentString" + appt.id + "no" + i + "' placeholder='" + comment.commentString + "'>" + 
                                                     "</li>"
                                                 );
