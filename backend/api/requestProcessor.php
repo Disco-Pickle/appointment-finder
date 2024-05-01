@@ -67,10 +67,8 @@ class RequestProcessor
 
 	}else {
 	    http_response_code(418);
-	    echo json_encode(['method' => 'Not Fouond']);
-	    echo $method;
-	    echo $requestInput;
-	}
+	    return ['method' => 'Not Fouond'];
+	   }
     }
 
    
