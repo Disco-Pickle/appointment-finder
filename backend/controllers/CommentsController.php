@@ -1,6 +1,6 @@
 <?php
 require_once("../utilities/Database.php");
-
+require_once("../models/Comments.php");
 class CommentsController
 {
 
@@ -14,7 +14,8 @@ class CommentsController
     $this->db->beginTransaction();
     try {
         $stmt = $this->db->prepare('INSERT INTO comments (name, commentString, appointmentId_fk) VALUES (?, ?, ?)');
-        $stmt->execute([$payload["name"], $payload["commentString"], $payload["appointmentId"]]);
+        $comment=new Comments($payload['name'],$payload['commentString'],$payload['appointmentId']);
+        $stmt->execute([$comment->name,$comment->commentString,$comment->appointmentId_fk]);
         $this->db->commit();
         return ['message' => 'Comment added', 'appointmentId' => $payload["appointmentId"] ];
     } catch (Exception $e) {
@@ -24,15 +25,9 @@ class CommentsController
 }
 public function getComments($appointmentId) {
     try {
-        // Prepare the SQL statement
         $stmt = $this->db->prepare('SELECT * FROM comments WHERE appointmentId_fk = ?');
-
-        // Execute the statement with the appointment ID
         $stmt->execute([$appointmentId]);
-
-        // Fetch all comments
         $comments = $stmt->fetchAll();
-
         return ['message' => 'Comments fetched', 'appointmentId' => $appointmentId, 'comments' => $comments];
     } catch (Exception $e) {
         throw $e;
