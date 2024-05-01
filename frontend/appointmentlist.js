@@ -76,7 +76,7 @@ $(function () {
                                         (
                                             "<li class='list-group-item'>" + 
                                                 "<input class='form-check-input me-1' type='checkbox' value='true' id='appointment" + appt.id + "date" + i + "' data-dateid='" + date.id + "'>" + 
-                                                "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + "</label>" + 
+                                                "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + " (" + date.personCount + " confirmation(s))" + "</label>" + 
                                             "</li>"
                                         );
                                         amtDates++;
@@ -148,7 +148,7 @@ $(function () {
             let transmitDate = $("#appointment" + apptID + "date" + i).prop('checked');
             
             // If checkbox was checked, name is appended to the date entry in the DB
-            if(transmitDate)
+            if(transmitDate && person != "")
             {
                 $.ajax
                 ({
