@@ -36,8 +36,7 @@ public function prepareInsertDates($payload)
             return [
                 'day' => htmlspecialchars($date['day']),
                 'starttime' => htmlspecialchars($date['starttime']),
-                'endtime' => htmlspecialchars($date['endtime']),
-                'persons' => htmlspecialchars($date['persons'])
+                'endtime' => htmlspecialchars($date['endtime'])
             ];
         }, $payload['dates']);
 

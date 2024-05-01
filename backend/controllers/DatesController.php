@@ -1,6 +1,6 @@
 <?php
 require_once '../utilities/Database.php';
-
+require_once '../models/Dates.php';
 class DatesController
 {
     private $db;
@@ -11,22 +11,23 @@ class DatesController
     }
 
 
-    public function insertDates($payload)
-    {
-        $dates=$payload['dates'];
+    public function insertDates($payload) {
+        $datesPayload = $payload['dates'];
         $this->db->beginTransaction();
         try {
             $stmt = $this->db->prepare('INSERT INTO dates (day, starttime, endtime, persons, fk_idappointment) VALUES (?, ?, ?, ?, ?)');
-            foreach ($dates as $date) {
-                $stmt->execute([$date['day'], $date['starttime'], $date['endtime'], $date['persons'], $payload['appointmentId']]);
+            foreach ($datesPayload as $datePayload) {
+                $date = new Dates( $datePayload['day'], $datePayload['starttime'], $datePayload['endtime'], $datePayload['persons'] ?? null);
+                $stmt->execute([$date->day, $date->startTime, $date->endTime, $date->persons, $payload['appointmentId']]);
             }
-            $this->db->commit(); // Commit the transaction after successful execution
-            return  ['message' => 'Date added to Appointment', 'appointmentId' =>  $payload['appointmentId']]; 
+            $this->db->commit();
+            return ['message' => 'Date added to Appointment', 'appointmentId' => $payload['appointmentId']];
         } catch (Exception $e) {
-            $this->db->rollBack(); // Roll back the transaction in case of an exception
+            $this->db->rollBack();
             throw $e;
         }
     }
+    
     public function getAppointmentDates($appointmentId)
     {
         try {
