@@ -1,6 +1,0 @@
-{
-    "action": "insertComment",
-    "name": "John Doe",
-    "commentString": "This is a test comment.",
-    "appointmentId": 99
-}
