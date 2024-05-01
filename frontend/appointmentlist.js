@@ -76,7 +76,7 @@ $(function () {
                                         (
                                             "<li class='list-group-item'>" + 
                                                 "<input class='form-check-input me-1' type='checkbox' value='true' id='appointment" + appt.id + "date" + i + "' data-dateid='" + date.id + "'>" + 
-                                                "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + " (" + date.personCount + " confirmation(s))" + "</label>" + 
+                                                "<label class='form-check-label' for='appointment" + appt.id + "date" + i + "'>" + date.day + ", " + date.starttime + " - " + date.endtime + " (" + date.personCount + " prs.)" + "</label>" + 
                                             "</li>"
                                         );
                                         amtDates++;
@@ -101,8 +101,8 @@ $(function () {
                         }                     
                     });
 
-                    // // If the appointment expired, it is disabled and marked as "(Expired)"
-                    appointments.forEach(function(appt, i)
+                    // If the appointment expired, it is disabled and marked as "(Expired)"
+                    appointments.forEach(function(appt, i) // We use a separate forEach loop for this so expired appts are displayed at the bottom
                     {
                         let currentExpiryDate = new Date(appt.expired);
                         if(today.getTime() >= currentExpiryDate.getTime())
@@ -110,10 +110,55 @@ $(function () {
                             $("#appointments").append
                             (
                                 "<li class='list-group-item'>" +
-                                    "<input class='form-check-input me-1' type='checkbox' value='1' id='appointment" + appt.id + "' disabled>" +
-                                    "<label class='form-check-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ", expired)</label>" + 
+                                    "<p class='d-inline-flex gap-1'>" +
+                                        "<button class='btn btn-secondary' type='button' data-bs-toggle='collapse' data-bs-target='#appointmentCollapse" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ", expired)</button>" +  
+                                    "</p>" + 
+                                    "<div class='collapse' id='appointmentCollapse" + appt.id + "'>" +  
+                                        "<label class='col-form-label' for='appointment" + appt.id + "' id='appointmentLabel" + appt.id + "'>#" + appt.id + " | " + appt.name + " (by " + appt.author + ", expired)</label>" + 
+                                    "</div>" + 
                                 "</li>"
                             );
+                            
+                            // Appends appointment dates of this appointment
+                            $.ajax
+                            ({
+                                url: "../backend/api/api.php",
+                                type: "POST",
+                                data: 
+                                JSON.stringify({
+                                    action: "getAppointmentDates",
+                                    appointmentId: appt.id
+                                }),
+                                contentType: "application/json",
+                                dataType: "json",
+                                success: function(dates) 
+                                {
+                                    console.log("Dates for appointment #" + appt.id + ":", dates);
+                                    
+                                    // Create new list for this appointment's dates
+                                    $("#appointmentLabel" + appt.id).append
+                                    (
+                                        "<ul class='list-group' id='appointmentDates" + appt.id + "'</ul>"
+                                    );
+                
+                                    // Append everything to the list item
+                                    let amtDates = 0; // Counts amount of dates
+                                    dates.forEach(function(date, i)
+                                    {
+                                        $("#appointmentDates" + appt.id).append
+                                        (
+                                            "<li class='list-group-item'>" + 
+                                                "<input disabled class='form-control' type='text' id='appointment" + appt.id + "date" + i + "' placeholder='" + date.day + ", " + date.starttime + " - " + date.endtime + " (" + date.personCount + " prs.)'>" + 
+                                            "</li>"
+                                        );
+                                        amtDates++;
+                                    });
+                                },
+                                error: function(dates) 
+                                {
+                                    console.error("Error fetching appointment dates:", dates);
+                                }
+                            });
                         } 
                     })
                 }
