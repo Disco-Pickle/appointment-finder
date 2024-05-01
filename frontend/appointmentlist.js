@@ -20,7 +20,7 @@ $(function () {
             dataType: "json",
             success: function(appointments) 
             {
-                if(appointments) 
+                if(appointments) // Checks if appointments is empty (executes rest of function if not)
                 {
                     // Clear existing appointments (if there are any)
                     $("#appointments").empty();
@@ -34,6 +34,7 @@ $(function () {
                         let currentExpiryDate = new Date(appt.expired);
                         if(today.getTime() < currentExpiryDate.getTime()) // getTime() gets epoch time in seconds
                         {
+                            // Appends current appointment as a collapsible button using bootstrap
                             $("#appointments").append
                             (
                                 "<li class='list-group-item'>" +
@@ -284,7 +285,7 @@ $(function () {
                         } 
                     })
                 }
-                else
+                else // Otherwise (if appointments is empty), information about this is given out
                 {
                     // Output to website and console: No appointments found
                     console.log("No appointments found.");
